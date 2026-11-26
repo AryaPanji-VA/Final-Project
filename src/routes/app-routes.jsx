@@ -1,7 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 
-import { AuthLayout } from "@/layouts/dashboard-layout";
-import { DashboardLayout } from "@/layouts/dashboard-layout";
+import { AuthLayout, DashboardLayout } from "@/layouts/dashboard-layout";
 import { ProtectedRoute } from "./protected-route";
 
 import { LoginPage } from "@/pages/auth/login";
@@ -19,21 +18,33 @@ export function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Halaman publik */}
+        {/* Area privat: ProtectedRoute menjaga semua halaman dashboard. */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<DashboardPage />} />
             <Route path="/universes" element={<MyUniversesPage />} />
             <Route path="/universes/create" element={<CreateUniversePage />} />
-            <Route path="/universes/:universeId" element={<UniverseOverviewPage />} />
-            <Route path="/universes/:universeId/lore" element={<LoreEncyclopediaPage />} />
-            <Route path="/universes/:universeId/lore/:loreId/edit" element={<LoreEditorPage />} />
-            <Route path="/universes/:universeId/timeline" element={<TimelinePage />} />
+            <Route
+              path="/universes/:universeId"
+              element={<UniverseOverviewPage />}
+            />
+            <Route
+              path="/universes/:universeId/lore"
+              element={<LoreEncyclopediaPage />}
+            />
+            <Route
+              path="/universes/:universeId/lore/:loreId/edit"
+              element={<LoreEditorPage />}
+            />
+            <Route
+              path="/universes/:universeId/timeline"
+              element={<TimelinePage />}
+            />
             <Route path="/discover" element={<DiscoverPage />} />
           </Route>
         </Route>
 
-        {/* Auth di luar dashboard */}
+        {/* Area publik: login & register memakai AuthLayout, di luar shell. */}
         <Route
           path="/login"
           element={
