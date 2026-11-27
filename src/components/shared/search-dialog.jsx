@@ -122,7 +122,7 @@ export function SearchDialog({ open, onOpenChange }) {
             className="h-14 w-full bg-transparent text-[14px] text-ink placeholder:text-ink-faint focus:outline-none"
           />
 
-          <kbd className="hidden shrink-0 border border-border-strong px-1.5 py-0.5 font-mono text-[10px] text-ink-faint sm:block">
+          <kbd className="type-num hidden shrink-0 border border-border-strong px-1.5 py-0.5 text-ink-faint sm:block">
             Esc
           </kbd>
         </div>
@@ -154,7 +154,7 @@ export function SearchDialog({ open, onOpenChange }) {
                 </span>
 
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate font-serif text-[15px] text-ink">
+                  <span className="block truncate type-section text-[15px] text-ink">
                     {story.title}
                   </span>
                   <span className="block truncate text-[12px] text-ink-muted">
@@ -183,7 +183,7 @@ export function SearchDialog({ open, onOpenChange }) {
                   </span>
 
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate font-serif text-[15px] text-ink">
+                    <span className="block truncate type-section text-[15px] text-ink">
                       {creator.name}
                     </span>
                     <span className="block truncate text-[12px] text-ink-muted">

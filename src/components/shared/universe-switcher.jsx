@@ -60,14 +60,14 @@ export function UniverseSwitcher({ className }) {
           >
             <span
               aria-hidden="true"
-              className="flex size-6 shrink-0 items-center justify-center border border-border-strong font-serif text-[10px] text-crimson"
+              className="flex size-6 shrink-0 items-center justify-center border border-border-strong font-ui font-semibold text-[10px] text-crimson"
             >
               {getInitials(label)}
             </span>
 
             <span className="hidden min-w-0 flex-1 lg:block">
               <span className="overline block text-ink-faint">Universe</span>
-              <span className="mt-0.5 block truncate font-serif text-[13.5px] leading-none text-ink">
+              <span className="mt-0.5 block truncate type-display text-[13px] leading-none text-ink">
                 {label}
               </span>
             </span>

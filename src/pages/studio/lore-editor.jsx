@@ -174,7 +174,7 @@ export function LoreEditorPage() {
             <Input
               id="loreTitle"
               placeholder="e.g. The Cloud Sea"
-              className="h-11 font-serif text-[16px]"
+              className="h-11 font-reading text-[17px]"
               invalid={Boolean(errors.title)}
               {...register("title")}
             />
@@ -250,7 +250,7 @@ export function LoreEditorPage() {
                   <Italic className="size-4" aria-hidden="true" />
                 </button>
 
-                <span className="ml-auto pr-1 font-mono text-[11px] text-ink-faint">
+                <span className="type-num ml-auto pr-1 text-ink-faint">
                   {content.split(/\s+/).filter(Boolean).length.toLocaleString("en-GB")} words
                 </span>
               </div>
@@ -262,7 +262,7 @@ export function LoreEditorPage() {
                 placeholder="Write the entry. Blank lines separate paragraphs."
                 aria-invalid={Boolean(errors.content) || undefined}
                 aria-describedby={errors.content ? "loreContent-message" : undefined}
-                className="min-h-[300px] w-full resize-y bg-transparent px-3 py-3 font-serif text-[16px] leading-[1.75] text-ink placeholder:text-ink-faint focus:outline-none"
+                className="min-h-[300px] w-full resize-y bg-transparent px-3 py-3 font-reading text-[17px] leading-[1.75] text-ink placeholder:text-ink-faint focus:outline-none"
                 {...register("content")}
               />
             </div>

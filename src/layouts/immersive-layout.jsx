@@ -87,7 +87,7 @@ export function ImmersiveLayout() {
 
             <Link
               to="/"
-              className="truncate font-serif text-[15px] text-ink-muted transition-colors hover:text-ink"
+              className="truncate type-display text-[14px] text-ink-muted transition-colors hover:text-ink"
             >
               Lorekeeper
             </Link>
@@ -158,7 +158,7 @@ export function ImmersiveLayout() {
                     <Minus className="size-3.5" aria-hidden="true" />
                   </button>
 
-                  <span className="min-w-12 border-x border-border-strong py-1.5 text-center font-mono text-[11px] text-ink">
+                  <span className="type-num min-w-12 border-x border-border-strong py-1.5 text-center text-ink">
                     {size}%
                   </span>
 

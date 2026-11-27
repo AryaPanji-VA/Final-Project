@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils";
 /**
  * PageHeader — workspace pages (§7).
  *
- * Overline in brass → serif H1 at 400 + actions → standfirst, closed by a
- * hairline with a brass tick. The tick is the archive's section mark: it
- * appears at the top of a workspace page and nowhere else on it.
+ * Overline in brass → page title + actions → standfirst, closed by a hairline
+ * with a brass tick. A workspace page is a tool, so its H1 is Inter semibold
+ * (`type-ui-title`): it scans fast and never competes with a literary surface.
+ * The tick is the archive's section mark: it appears at the top of a workspace
+ * page and nowhere else on it.
  */
 export function PageHeader({ overline, title, description, actions, backTo, backLabel, className }) {
   return (
@@ -27,7 +29,7 @@ export function PageHeader({ overline, title, description, actions, backTo, back
 
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-4">
         <div className="min-w-0">
-          <h1 className="font-serif text-[clamp(1.6rem,1.2rem+1.2vw,2.25rem)] leading-[1.14] tracking-[-0.02em] text-ink">
+          <h1 className="type-ui-title text-[clamp(1.5rem,1.15rem+1.05vw,2rem)] text-ink">
             {title}
           </h1>
         </div>

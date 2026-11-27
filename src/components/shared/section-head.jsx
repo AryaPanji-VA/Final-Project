@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 /**
  * SectionHead — the editorial section divider (§1.2).
  *
- * Overline in brass, a serif title at 400, an optional standfirst and action,
+ * Overline in brass, a Cormorant title, an optional standfirst and action,
  * sitting above a hairline with a brass tick at its centre. The tick is the
  * page's one ornament; it is what makes a run of sections read as a printed
  * sequence rather than a stack of blocks.
@@ -25,7 +25,7 @@ export function SectionHead({
         {overline ? <p className="overline text-brass">{overline}</p> : null}
 
         {title ? (
-          <h2 className="mt-2.5 font-serif text-[clamp(1.25rem,1.05rem+0.7vw,1.75rem)] leading-[1.15] tracking-[-0.015em] text-ink">
+          <h2 className="type-section mt-2.5 text-[clamp(1.3rem,1.08rem+0.8vw,1.85rem)] text-ink">
             {title}
           </h2>
         ) : null}
@@ -83,7 +83,7 @@ export function EditorialHeader({
 
       <h1
         className={cn(
-          "mt-4 font-serif leading-[1.03] tracking-[-0.03em] text-ink",
+          "type-page mt-4 text-ink",
           "text-[clamp(2.25rem,1.3rem+3.6vw,4.25rem)]",
           centred ? "mx-auto max-w-[20ch]" : "max-w-[22ch]",
         )}
@@ -105,7 +105,7 @@ export function EditorialHeader({
       {meta ? (
         <div
           className={cn(
-            "mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint",
+            "type-meta mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-ink-faint",
             centred && "justify-center",
           )}
         >

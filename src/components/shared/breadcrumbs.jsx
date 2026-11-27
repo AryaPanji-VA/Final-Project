@@ -44,7 +44,7 @@ export function Breadcrumbs({ className }) {
 
   if (crumbs.length === 0) {
     return (
-      <p className={cn("truncate font-serif text-[14px] italic text-ink-faint", className)}>
+      <p className={cn("truncate font-ui text-[13px] text-ink-faint", className)}>
         The Archive of Imagined Worlds
       </p>
     );

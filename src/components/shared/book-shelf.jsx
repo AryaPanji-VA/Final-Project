@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeft, ArrowRight, BookOpen, X } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { resolveTone, StoryCover } from "@/components/shared/story-cover";
 
 /**
@@ -41,6 +42,10 @@ const smoothstep = (x) => x * x * (3 - 2 * x);
 
 const EASE = "cubic-bezier(0.2, 0.8, 0.2, 1)";
 const SHEET_EASE = "cubic-bezier(0.76, 0, 0.18, 1)";
+// Opening a book is a slow reveal: it starts gently, carries through the
+// middle, and only then settles. The exit curve above is deliberately the
+// opposite — leaving is quick.
+const OPEN_EASE = "cubic-bezier(0.42, 0, 0.24, 1)";
 
 /* ---------------- shelf ---------------- */
 
@@ -62,6 +67,15 @@ export function BookShelf({ stories, className }) {
   const restingRef = useRef(activeIndex); // last index reported to React
   const dragRef = useRef(null);
   const reducedRef = useRef(false);
+
+  // Momentum and aim. `velocityRef` is books-per-second carried past the last
+  // wheel tick — that trailing travel is what gives the scrub weight. `idleRef`
+  // is when input last arrived, so the settle knows when to take over.
+  const velocityRef = useRef(0);
+  const idleRef = useRef(0);
+  // Pointer in viewport space, and the eased tilt it drives.
+  const pointerRef = useRef({ x: 0, y: 0 });
+  const tiltRef = useRef({ x: 0, y: 0 });
 
   const count = stories.length;
   const copies = 3; // a book can be visible on both sides of the loop
@@ -90,6 +104,10 @@ export function BookShelf({ stories, className }) {
       // the resting book's 4° tilt and the hovered book's 5% lift — without it
       // the corner of the facing cover clips at the top of the viewport.
       setMetrics({ height: rect.height * 0.86, width: rect.width });
+
+      // Park the aim at the centre until the pointer says otherwise, so the
+      // first frame is not a hard lean to one side.
+      pointerRef.current = { x: rect.width / 2, y: rect.height / 2 };
     }
 
     measure();
@@ -168,12 +186,21 @@ export function BookShelf({ stories, className }) {
     }
 
     function onPointerMove(event) {
+      // Aim is tracked everywhere, not only while dragging: the books turn to
+      // follow the pointer, and they should start turning as it approaches.
+      const rect = viewport.getBoundingClientRect();
+      pointerRef.current = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+
       const drag = dragRef.current;
       if (!drag) return;
 
       const dx = event.clientX - drag.x;
       if (Math.abs(dx) > 6) drag.moved = true;
-      if (drag.moved) targetRef.current = drag.target - dx / step;
+      if (drag.moved) {
+        targetRef.current = drag.target - dx / step;
+        velocityRef.current = 0; // a drag is direct; momentum would fight it
+        idleRef.current = performance.now();
+      }
     }
 
     function onPointerUp() {
@@ -193,14 +220,21 @@ export function BookShelf({ stories, className }) {
       dragRef.current = null;
     }
 
+    function onPointerLeave() {
+      // Park the aim at the centre so the tilt eases back instead of sticking.
+      const rect = viewport.getBoundingClientRect();
+      pointerRef.current = { x: rect.width / 2, y: rect.height / 2 };
+    }
+
     function onWheel(event) {
       if (isOpen) return;
 
       // Both axes drive the shelf: a horizontal trackpad swipe stays
       // pixel-accurate, a vertical mouse wheel moves roughly one book per
-      // notch. The scrub is continuous while scrolling and the idle timer
-      // lets the frame loop glide the nearest book to rest — the same
-      // feel as scroll-driven slide switchers.
+      // notch. The wheel feeds BOTH the destination and the velocity, so the
+      // shelf keeps travelling for a moment after the last tick — that
+      // trailing carry is the weight. The idle timer only decides when the
+      // destination snaps to a whole book.
       const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
       const dx = event.deltaX * unit;
       const dy = event.deltaY * unit;
@@ -209,22 +243,28 @@ export function BookShelf({ stories, className }) {
       if (delta === 0) return;
 
       event.preventDefault();
-      targetRef.current += delta * (horizontal ? 1 / step : 1 / 120);
+      const amount = delta * (horizontal ? 1 / step : 1 / 150);
+      targetRef.current += amount;
+      velocityRef.current += amount * 3.2; // books per second of carry
+      idleRef.current = performance.now();
+
       window.clearTimeout(onWheel.timer);
       onWheel.timer = window.setTimeout(() => {
         targetRef.current = Math.round(targetRef.current);
-      }, 200);
+      }, 260);
     }
 
     viewport.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
+    viewport.addEventListener("pointerleave", onPointerLeave);
     viewport.addEventListener("wheel", onWheel, { passive: false });
 
     return () => {
       viewport.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
+      viewport.removeEventListener("pointerleave", onPointerLeave);
       viewport.removeEventListener("wheel", onWheel);
       window.clearTimeout(onWheel.timer);
     };
@@ -242,18 +282,61 @@ export function BookShelf({ stories, className }) {
       const dt = Math.min(50, now - last) / 1000;
       last = now;
 
-      // Position eases toward the target; under reduced motion it just snaps.
+      // Position is a damped spring, not an eased lerp. An eased lerp starts
+      // at full speed and slows down, which reads as "light". A spring has to
+      // accelerate first, carries momentum past the last wheel tick, and then
+      // settles — that lag is the weight. Integrated in fixed sub-steps so a
+      // long frame gap cannot blow the spring up.
       if (reducedRef.current) {
         posRef.current = targetRef.current;
+        velocityRef.current = 0;
       } else {
-        const k = dragRef.current?.moved ? 16 : 5.4;
-        posRef.current += (targetRef.current - posRef.current) * (1 - Math.exp(-k * dt));
-        if (Math.abs(targetRef.current - posRef.current) < 1e-4) {
+        const dragging = dragRef.current?.moved;
+        // Stiffness: a drag tracks the finger tightly, a wheel scrub is heavy.
+        const stiffness = dragging ? 120 : 26;
+        const damping = 2 * Math.sqrt(stiffness); // critical — no bounce
+
+        let remaining = dt;
+        while (remaining > 1e-4) {
+          const step = Math.min(remaining, 1 / 120);
+          remaining -= step;
+
+          velocityRef.current +=
+            (targetRef.current - posRef.current) * stiffness * step -
+            velocityRef.current * damping * step;
+          posRef.current += velocityRef.current * step;
+        }
+
+        // Park exactly on the target once both offset and speed are spent.
+        if (
+          Math.abs(targetRef.current - posRef.current) < 1e-3 &&
+          Math.abs(velocityRef.current) < 1e-3
+        ) {
           posRef.current = targetRef.current;
+          velocityRef.current = 0;
         }
       }
 
       const s = posRef.current;
+
+      // Aim. The pointer is read against the shelf's own box, so the books
+      // follow the cursor wherever it is — not just when it is over the
+      // centred book. Two strengths, deliberately gentle: a wider lean while
+      // the pointer is over the facing cover, a whisper elsewhere.
+      const px = pointerRef.current.x - w / 2;
+      const py = pointerRef.current.y - h / 2;
+      const overCover = !isOpen && Math.abs(px) < 0.55 * d && Math.abs(py) < 0.6 * h;
+
+      const aimY = overCover
+        ? clamp((px / (0.55 * d)) * 6, -6, 6)
+        : clamp((px / Math.max(w, 1)) * 4, -4, 4);
+      const aimX = overCover ? clamp(-(py / (h / 2)) * 4, -4, 4) : 0;
+
+      const f7 = 1 - Math.exp(-7 * dt);
+      tiltRef.current.y += (aimY - tiltRef.current.y) * f7;
+      tiltRef.current.x += (aimX - tiltRef.current.x) * f7;
+      const tiltY = tiltRef.current.y;
+      const tiltX = tiltRef.current.x;
 
       for (const entry of bookRefs.current) {
         if (!entry) continue;
@@ -300,9 +383,14 @@ export function BookShelf({ stories, className }) {
         const y = -o * 0.03 * h - eased * 0.05 * h;
         const z = o * 0.2 * h;
 
+        // The tilt is scaled by `o`, so the book facing the camera leans with
+        // the pointer and the spines beside it stay upright — the row reads as
+        // one object turning its head, not a wall of tilting cards.
         el.style.transform =
           `translate3d(${x.toFixed(2)}px, ${y.toFixed(2)}px, ${z.toFixed(2)}px) ` +
-          `rotateZ(${(-4 * o).toFixed(3)}deg) rotateY(${(-90 * o).toFixed(3)}deg)`;
+          `rotateZ(${(-4 * o).toFixed(3)}deg) ` +
+          `rotateX(${(tiltX * o).toFixed(3)}deg) ` +
+          `rotateY(${(-90 * o + tiltY * o).toFixed(3)}deg)`;
         el.style.zIndex = String(Math.round(100 - distance * 4));
 
         // The face that points at the camera is the one that gets the light.
@@ -352,19 +440,23 @@ export function BookShelf({ stories, className }) {
       Math.max(0, window.innerHeight - rect.bottom)
     }px ${Math.max(0, rect.left)}px round 3px)`;
 
+    // A slow, deliberate zoom: the sheet has to travel from the cover's own
+    // rectangle to full bleed, so it gets nearly a second and an ease-out that
+    // front-loads the expansion. Anything faster reads as a page switch rather
+    // than a book being opened.
     sheet.animate(
       [
-        { clipPath: inset, transform: "rotate(-4deg)" },
-        { clipPath: "inset(0px 0px 0px 0px round 0px)", transform: "rotate(0deg)" },
+        { clipPath: inset, transform: "rotate(-4deg) scale(0.86)", opacity: 0.35 },
+        { clipPath: "inset(0px 0px 0px 0px round 0px)", transform: "rotate(0deg) scale(1)", opacity: 1 },
       ],
-      { duration: reducedRef.current ? 1 : 620, easing: SHEET_EASE, fill: "both" },
+      { duration: reducedRef.current ? 1 : 1150, easing: OPEN_EASE, fill: "both" },
     );
 
     sheet.querySelector("[data-sheet-body]")?.animate(
-      [{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "translateY(0)" }],
+      [{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "translateY(0)" }],
       {
-        duration: reducedRef.current ? 1 : 420,
-        delay: reducedRef.current ? 0 : 260,
+        duration: reducedRef.current ? 1 : 620,
+        delay: reducedRef.current ? 0 : 560,
         easing: EASE,
         fill: "both",
       },
@@ -388,10 +480,10 @@ export function BookShelf({ stories, className }) {
 
     const animation = sheet.animate(
       [
-        { clipPath: "inset(0px 0px 0px 0px round 0px)", transform: "rotate(0deg)" },
-        { clipPath: inset, transform: "rotate(-4deg)" },
+        { clipPath: "inset(0px 0px 0px 0px round 0px)", transform: "rotate(0deg) scale(1)", opacity: 1 },
+        { clipPath: inset, transform: "rotate(-4deg) scale(0.86)", opacity: 0.35 },
       ],
-      { duration: 420, easing: SHEET_EASE, fill: "both" },
+      { duration: 680, easing: SHEET_EASE, fill: "both" },
     );
 
     animation.onfinish = () => setIsOpen(false);
@@ -464,7 +556,7 @@ export function BookShelf({ stories, className }) {
               onClick={() => jumpTo(genre.index)}
               aria-pressed={isActive}
               className={cn(
-                "label-box h-8 border font-mono text-[10px] uppercase tracking-[0.12em] transition-colors",
+                "label-box h-8 border font-ui text-[10px] uppercase tracking-[0.12em] transition-colors",
                 isActive
                   ? "border-brass/60 bg-brass/10 text-brass"
                   : "border-transparent text-ink-faint hover:border-border-strong hover:text-ink",
@@ -547,14 +639,14 @@ export function BookShelf({ stories, className }) {
                       className={cn("absolute inset-x-0 top-0 h-px", tone.rule)}
                     />
                     <span
-                      className="whitespace-nowrap font-serif text-[12px] leading-none tracking-[0.02em]"
+                      className="whitespace-nowrap font-reading text-[12.5px] font-medium leading-none tracking-[0.01em]"
                       style={{ writingMode: "vertical-rl" }}
                     >
                       {story.title}
                     </span>
                     <span
                       className={cn(
-                        "absolute bottom-2 font-mono text-[7px] uppercase tracking-[0.1em]",
+                        "absolute bottom-2 font-ui text-[7px] tabular-nums uppercase tracking-[0.1em]",
                         tone.meta,
                       )}
                       style={{ writingMode: "vertical-rl" }}
@@ -615,7 +707,7 @@ export function BookShelf({ stories, className }) {
           <div className="mask-line mt-2">
             <h2
               key={`${current.id}-title`}
-              className="font-serif text-[clamp(1.5rem,1.1rem+1.6vw,2.25rem)] leading-[1.1] tracking-[-0.015em] text-ink"
+              className="type-section text-[clamp(1.55rem,1.15rem+1.7vw,2.35rem)] leading-[1.12] text-ink"
             >
               <Link to={`/stories/${current.slug}`} className="hover:text-arcane-bright">
                 {current.title}
@@ -652,7 +744,7 @@ export function BookShelf({ stories, className }) {
             <ArrowLeft className="size-4" aria-hidden="true" />
           </button>
 
-          <span className="label-box border-border-strong font-mono text-ink-muted">
+          <span className="label-box border-border-strong font-ui tabular-nums text-ink-muted">
             {String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}
           </span>
 
@@ -676,93 +768,183 @@ export function BookShelf({ stories, className }) {
         </div>
       </div>
 
-      {/* Quick-look sheet. Kept mounted so the clip-path animation has an
-          element to grow from; hidden from AT while closed. */}
-      <div
-        ref={sheetRef}
-        role="dialog"
-        aria-modal="true"
-        aria-label={current.title}
-        tabIndex={-1}
-        className={cn(
-          "fixed inset-0 z-[70] bg-surface focus-visible:outline-none",
-          !isOpen && "pointer-events-none invisible",
-        )}
-      >
+      {/* Quick-look sheet, portalled to <body>. Kept mounted so the clip-path
+          animation has an element to grow from; hidden from AT while closed.
+
+          The portal is load-bearing: `position: fixed` resolves against the
+          nearest ancestor with a transform, filter or clip-path, and
+          `.page-enter` keeps a clip-path from its entrance animation
+          (`fill: both`). Left in the tree, this sheet would be trapped in that
+          ancestor's stacking context and the sticky header (z-40) would paint
+          over its top edge no matter what z-index the sheet carries.
+
+          The ground is flat black, not a paper tone: opening a book puts the
+          archive away and dims the room, so the only things lit are the cover
+          and the page in front of it. */}
+      {createPortal(
         <div
-          data-sheet-body
-          className="mx-auto grid h-full max-w-[1180px] content-center gap-10 px-6 py-20 sm:grid-cols-[1fr_300px] sm:items-center sm:px-10"
+          ref={sheetRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label={current.title}
+          tabIndex={-1}
+          className={cn(
+            "fixed inset-0 z-[70] overflow-y-auto bg-black focus-visible:outline-none",
+            !isOpen && "pointer-events-none invisible",
+          )}
         >
-          <div className="min-w-0">
-            <p className="overline text-brass">
-              {current.genre} · {current.chapterCount} chapters ·{" "}
-              {current.wordCount.toLocaleString("en-GB")} words
-            </p>
+          <div
+            data-sheet-body
+            className="relative mx-auto flex min-h-full w-full max-w-[1180px] flex-col justify-center gap-10 px-6 py-20 sm:px-10"
+          >
+            {/* Masthead — overline, title and byline span the full measure. The
+                old sheet centred everything in two columns, which left 225px of
+                dead air above and below the tallest column. */}
+            <header className="pb-8">
+              <p className="overline text-brass">
+                {current.genre} · {current.chapterCount} chapters ·{" "}
+                {current.wordCount.toLocaleString("en-GB")} words
+              </p>
 
-            <h2 className="mt-3 font-serif text-[clamp(2rem,1.4rem+2.6vw,3.5rem)] leading-[1.04] tracking-[-0.025em] text-ink">
-              {current.title}
-            </h2>
+              <h2 className="type-page mt-3 max-w-[22ch] text-[clamp(2rem,1.4rem+2.6vw,3.5rem)] text-ink">
+                {current.title}
+              </h2>
 
-            <p className="mt-4 text-[13px] text-ink-muted">
-              by{" "}
-              <Link
-                to={`/creators/${current.author?.handle}`}
-                className="text-ink underline-offset-4 hover:text-arcane-bright hover:underline"
-              >
-                {current.author?.name}
-              </Link>
-              {current.universe ? (
-                <>
-                  <span aria-hidden="true" className="mx-2 text-ink-faint">
-                    ·
-                  </span>
-                  <span>{current.universe.name}</span>
-                </>
-              ) : null}
-            </p>
+              <p className="mt-4 text-[13px] text-ink-muted">
+                by{" "}
+                <Link
+                  to={`/creators/${current.author?.handle}`}
+                  className="text-ink underline-offset-4 hover:text-arcane-bright hover:underline"
+                >
+                  {current.author?.name}
+                </Link>
+                {current.universe ? (
+                  <>
+                    <span aria-hidden="true" className="mx-2 text-ink-faint">
+                      ·
+                    </span>
+                    <span>{current.universe.name}</span>
+                  </>
+                ) : null}
+              </p>
+            </header>
 
-            <p className="mt-6 max-w-[58ch] text-[15px] leading-[1.7] text-ink-muted">
-              {current.synopsis}
-            </p>
+            {/* Spread — cover on the left, the reading matter on the right. The
+                cover is never hidden: on mobile it sits above the text at a
+                smaller size instead of disappearing. */}
+            <div className="grid gap-8 sm:grid-cols-[220px_1fr] sm:gap-10 lg:grid-cols-[300px_1fr]">
+              <div className="mx-auto w-[150px] shrink-0 sm:mx-0 sm:w-full">
+                <StoryCover
+                  story={current}
+                  size="md"
+                  className="shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)]"
+                />
+              </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  closeSheet();
-                  navigate(`/stories/${current.slug}`);
-                }}
-                className="inline-flex h-11 items-center gap-2 rounded-[3px] bg-crimson px-5 text-[13px] font-medium text-onaccent transition-colors hover:bg-crimson-deep"
-              >
-                <BookOpen className="size-4" aria-hidden="true" />
-                Read the story
-              </button>
+              <div className="min-w-0">
+                <p className="max-w-[58ch] text-[15px] leading-[1.7] text-ink-muted">
+                  {current.synopsis}
+                </p>
 
-              <button
-                type="button"
-                onClick={closeSheet}
-                className="inline-flex h-11 items-center gap-2 rounded-[3px] border border-border-strong px-4 text-[13px] text-ink transition-colors hover:border-ink"
-              >
-                Back to the shelf
-              </button>
+                {/* Meta rail — the counts a keeper checks before committing. */}
+                <dl className="mt-7 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-border pt-5 sm:grid-cols-4">
+                  {[
+                    ["Chapters", `${current.chapterCount} of ${current.totalChapters}`],
+                    ["Words", current.wordCount.toLocaleString("en-GB")],
+                    ["Reads", current.reads.toLocaleString("en-GB")],
+                    ["Published", current.publishedAt ? formatDate(current.publishedAt) : "—"],
+                  ].map(([label, value]) => (
+                    <div key={label}>
+                      <dt className="overline text-ink-faint">{label}</dt>
+                      <dd className="type-num mt-1.5 text-[12.5px] text-ink">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+
+                {/* Chapter preview — the sheet answers "what is in this book?",
+                    not just "what is it about?". Drafts are shown muted, so the
+                    count above and the list below always agree. */}
+                {current.chapters?.length ? (
+                  <div className="mt-8">
+                    <p className="overline text-ink-faint">Contents</p>
+
+                    <ol className="mt-3 divide-y divide-border border-y border-border">
+                      {current.chapters.slice(0, 4).map((chapter) => {
+                        const published = chapter.status === "published";
+
+                        return (
+                          <li key={chapter.id}>
+                            {published ? (
+                              <Link
+                                to={`/stories/${current.slug}/read/${chapter.id}`}
+                                onClick={closeSheet}
+                                className="group flex items-baseline gap-3 py-2.5 transition-colors hover:text-arcane-bright"
+                              >
+                                <span className="type-num w-6 shrink-0 text-ink-faint">
+                                  {String(chapter.index).padStart(2, "0")}
+                                </span>
+                                <span className="min-w-0 flex-1 truncate text-[13.5px] text-ink group-hover:text-arcane-bright">
+                                  {chapter.title}
+                                </span>
+                                <span className="type-num shrink-0 text-[11px] text-ink-faint">
+                                  {chapter.words.toLocaleString("en-GB")}
+                                </span>
+                              </Link>
+                            ) : (
+                              <div className="flex items-baseline gap-3 py-2.5 opacity-55">
+                                <span className="type-num w-6 shrink-0 text-ink-faint">
+                                  {String(chapter.index).padStart(2, "0")}
+                                </span>
+                                <span className="min-w-0 flex-1 truncate text-[13.5px] text-ink-muted">
+                                  {chapter.title}
+                                </span>
+                                <span className="overline shrink-0 text-[9.5px] text-ink-faint">Draft</span>
+                              </div>
+                            )}
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </div>
+                ) : null}
+
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      closeSheet();
+                      navigate(`/stories/${current.slug}`);
+                    }}
+                    className="inline-flex h-11 items-center gap-2 rounded-[3px] bg-crimson px-5 text-[13px] font-medium text-onaccent transition-colors hover:bg-crimson-deep"
+                  >
+                    <BookOpen className="size-4" aria-hidden="true" />
+                    Read the story
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={closeSheet}
+                    className="inline-flex h-11 items-center gap-2 rounded-[3px] border border-border-strong px-4 text-[13px] text-ink transition-colors hover:border-ink"
+                  >
+                    Back to the shelf
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="hidden w-[300px] sm:block">
-            <StoryCover story={current} size="md" className="shadow-[0_30px_60px_-30px_rgba(0,0,0,0.8)]" />
-          </div>
-        </div>
-
-        <button
-          type="button"
-          onClick={closeSheet}
-          aria-label="Close"
-          className="label-box absolute left-6 top-6 border-border-strong text-ink-muted transition-colors hover:border-ink hover:text-ink"
-        >
-          <X className="mr-1.5 inline size-3" aria-hidden="true" />
-          Close
-        </button>
-      </div>
+          <button
+            type="button"
+            onClick={closeSheet}
+            aria-label="Close"
+            className="label-box absolute right-6 top-6 border-border-strong bg-black/80 text-ink-muted backdrop-blur-[2px] transition-colors hover:border-ink hover:text-ink"
+          >
+            <X className="mr-1.5 inline size-3" aria-hidden="true" />
+            Close
+          </button>
+        </div>,
+        document.body,
+      )}
     </section>
   );
 }

@@ -19,7 +19,7 @@ export function CreatorCard({ creator, className, compact = false }) {
       <span
         aria-hidden="true"
         className={cn(
-          "flex shrink-0 items-center justify-center border border-border-strong font-serif text-crimson transition-colors group-hover:border-ink",
+          "flex shrink-0 items-center justify-center type-ui-title border border-border-strong text-crimson transition-colors group-hover:border-ink",
           compact ? "size-10 text-[14px]" : "size-12 text-[17px]",
         )}
       >
@@ -27,7 +27,7 @@ export function CreatorCard({ creator, className, compact = false }) {
       </span>
 
       <span className="min-w-0 flex-1">
-        <span className="block font-serif text-[16px] leading-tight text-ink group-hover:text-arcane-bright">
+        <span className="block font-display text-[15.5px] leading-tight tracking-[0.005em] text-ink group-hover:text-arcane-bright">
           {creator.name}
         </span>
 

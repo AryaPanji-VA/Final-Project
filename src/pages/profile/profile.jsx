@@ -77,13 +77,13 @@ export function ProfilePage() {
           <div className="flex items-center gap-5 border-b border-border pb-6">
             <span
               aria-hidden="true"
-              className="flex size-16 shrink-0 items-center justify-center border border-border-strong font-serif text-[22px] text-crimson"
+              className="flex size-16 shrink-0 items-center justify-center border border-border-strong font-ui text-[21px] font-semibold text-crimson"
             >
               {getInitials(name || user?.name)}
             </span>
 
             <div className="min-w-0">
-              <p className="truncate font-serif text-[22px] leading-tight text-ink">
+              <p className="truncate type-display text-[20px] leading-tight text-ink">
                 {name || "Unnamed keeper"}
               </p>
               <p className="mt-1 truncate text-[13px] text-ink-muted">
@@ -154,7 +154,7 @@ export function ProfilePage() {
               ].map(([label, value]) => (
                 <div key={label} className="flex items-baseline justify-between gap-3 py-2.5">
                   <dt className="text-[13px] text-ink-muted">{label}</dt>
-                  <dd className="font-serif text-[18px] leading-none text-ink">{value}</dd>
+                  <dd className="type-display text-[18px] leading-none text-ink">{value}</dd>
                 </div>
               ))}
             </dl>

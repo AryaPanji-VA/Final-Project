@@ -115,7 +115,7 @@ export function CreationsPage() {
                     >
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="font-serif text-[16.5px] text-ink group-hover:text-arcane-bright">
+                          <h3 className="font-ui text-[14.5px] font-semibold text-ink group-hover:text-arcane-bright">
                             {story.title}
                           </h3>
                           <StatusBadge status={story.status} />
@@ -155,7 +155,7 @@ export function CreationsPage() {
                     <div className="min-w-0 flex-1">
                       <Link
                         to={`/stories/${story.slug}`}
-                        className="font-serif text-[16px] text-ink hover:text-arcane-bright"
+                        className="font-ui text-[14.5px] font-medium text-ink hover:text-arcane-bright"
                       >
                         {story.title}
                       </Link>
@@ -201,7 +201,7 @@ export function CreationsPage() {
                     <div className="min-w-0 flex-1">
                       <Link
                         to={`/studio/worlds/${universe.id}`}
-                        className="font-serif text-[15px] text-ink hover:text-arcane-bright"
+                        className="font-ui text-[14px] font-medium text-ink hover:text-arcane-bright"
                       >
                         {universe.name}
                       </Link>
@@ -234,7 +234,7 @@ export function CreationsPage() {
                   <li key={campaign.id} className="flex items-center gap-3 py-3">
                     <Swords className="size-4 shrink-0 text-ink-faint" aria-hidden="true" />
                     <div className="min-w-0 flex-1">
-                      <p className="font-serif text-[15px] text-ink">{campaign.title}</p>
+                      <p className="font-ui text-[14px] font-medium text-ink">{campaign.title}</p>
                       <p className="text-[11.5px] text-ink-faint">
                         {campaign.system} · {campaign.sessions} sessions · {campaign.status}
                       </p>

@@ -95,7 +95,7 @@ export function WorldDetailPage() {
 
           <span
             aria-hidden="true"
-            className="relative font-serif text-[clamp(3rem,2rem+6vw,6rem)] leading-none tracking-[-0.03em] text-crimson/20"
+            className="type-display relative text-[clamp(2.75rem,1.9rem+5vw,5.25rem)] leading-none text-crimson/20"
           >
             {getInitials(universe.name)}
           </span>
@@ -130,7 +130,7 @@ export function WorldDetailPage() {
         >
           <span className="min-w-0">
             <BookOpen className="size-4 text-crimson" aria-hidden="true" />
-            <span className="mt-3 block font-serif text-[17px] text-ink group-hover:text-arcane-bright">
+            <span className="mt-3 block font-ui text-[14.5px] font-medium text-ink group-hover:text-arcane-bright">
               Encyclopedia
             </span>
             <span className="mt-1 block text-[13px] leading-relaxed text-ink-muted">
@@ -147,7 +147,7 @@ export function WorldDetailPage() {
         >
           <span className="min-w-0">
             <Hourglass className="size-4 text-crimson" aria-hidden="true" />
-            <span className="mt-3 block font-serif text-[17px] text-ink group-hover:text-arcane-bright">
+            <span className="mt-3 block font-ui text-[14.5px] font-medium text-ink group-hover:text-arcane-bright">
               Timeline
             </span>
             <span className="mt-1 block text-[13px] leading-relaxed text-ink-muted">
@@ -191,7 +191,7 @@ export function WorldDetailPage() {
                     {entry.category}
                   </span>
 
-                  <span className="min-w-0 flex-1 truncate font-serif text-[15.5px] text-ink group-hover:text-arcane-bright">
+                  <span className="min-w-0 flex-1 truncate font-ui text-[14.5px] font-medium text-ink group-hover:text-arcane-bright">
                     {entry.title}
                   </span>
 

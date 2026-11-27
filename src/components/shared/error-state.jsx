@@ -14,7 +14,7 @@ export function ErrorState({
 }) {
   return (
     <div role="alert" className={cn("border-l-2 border-alert bg-alert/5 py-7 pl-5 pr-5", className)}>
-      <p className="font-serif text-[18px] leading-snug text-ink">{title}</p>
+      <p className="type-section text-[19px] leading-snug text-ink">{title}</p>
       <p className="mt-2 max-w-[52ch] text-[13.5px] leading-relaxed text-ink-muted">{message}</p>
 
       {onRetry ? (

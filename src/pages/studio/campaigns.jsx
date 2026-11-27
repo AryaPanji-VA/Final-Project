@@ -247,7 +247,7 @@ export function CampaignsPage() {
                       )}
                     >
                       <span className="min-w-0 flex-1">
-                        <span className="block font-serif text-[15.5px] leading-snug text-ink">
+                        <span className="block font-ui text-[14px] font-medium leading-snug text-ink">
                           {campaign.title}
                         </span>
                         <span className="mt-0.5 block text-[11.5px] text-ink-faint">
@@ -282,7 +282,7 @@ export function CampaignsPage() {
                   ) : null}
                 </div>
 
-                <h2 className="mt-3 font-serif text-[clamp(1.5rem,1.2rem+1vw,2rem)] leading-[1.12] tracking-[-0.02em] text-ink">
+                <h2 className="mt-3 font-ui text-[clamp(1.35rem,1.15rem+0.8vw,1.7rem)] font-semibold leading-[1.2] tracking-[-0.012em] text-ink">
                   {selected.title}
                 </h2>
 
@@ -291,7 +291,7 @@ export function CampaignsPage() {
                 </p>
 
                 {selected.setting ? (
-                  <p className="mt-3 border-l-2 border-brass pl-3 font-serif text-[14px] italic leading-relaxed text-ink-muted">
+                  <p className="mt-3 border-l-2 border-brass pl-3 font-reading text-[15.5px] italic leading-relaxed text-ink-muted">
                     {selected.setting}
                   </p>
                 ) : null}
@@ -314,7 +314,7 @@ export function CampaignsPage() {
                   <ul className="mt-2 divide-y divide-border border-t border-border">
                     {selected.quests.map((quest) => (
                       <li key={quest.id} className="flex items-center justify-between gap-3 py-3">
-                        <span className="min-w-0 font-serif text-[15px] text-ink">{quest.title}</span>
+                        <span className="min-w-0 font-ui text-[14px] font-medium text-ink">{quest.title}</span>
                         <Badge variant={QUEST_STATUS[quest.status] ?? "outline"}>
                           {quest.status}
                         </Badge>
@@ -341,7 +341,7 @@ export function CampaignsPage() {
                           aria-hidden="true"
                         />
                         <span className="min-w-0">
-                          <span className="block font-serif text-[15px] text-ink">{npc.name}</span>
+                          <span className="block font-ui text-[14px] font-medium text-ink">{npc.name}</span>
                           <span className="mt-0.5 block text-[11.5px] text-ink-faint">
                             {npc.role} · {npc.note}
                           </span>
@@ -365,10 +365,10 @@ export function CampaignsPage() {
                     {selected.notes.map((note) => (
                       <li key={note.id} className="py-4">
                         <div className="flex items-baseline gap-3">
-                          <span className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint">
+                          <span className="type-meta text-ink-faint">
                             Session {String(note.session).padStart(2, "0")}
                           </span>
-                          <h3 className="font-serif text-[15.5px] text-ink">
+                          <h3 className="font-ui text-[14.5px] font-semibold text-ink">
                             {note.title}
                           </h3>
                         </div>

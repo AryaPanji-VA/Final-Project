@@ -34,7 +34,7 @@ export function StoryCard({ story, className, size = "md", showStatus = false })
           {showStatus ? <StatusBadge status={story.status} /> : null}
         </div>
 
-        <h3 className="mt-1.5 font-serif text-[17px] leading-[1.25] text-ink">
+        <h3 className="type-section mt-1.5 text-[17px] leading-[1.25] text-ink">
           <Link
             to={`/stories/${story.slug}`}
             className="underline-offset-4 hover:text-arcane-bright hover:underline"
@@ -83,7 +83,7 @@ export function StoryRow({ story, className, trailing }) {
       <div className="min-w-0 flex-1">
         <span className="overline text-ink-faint">{story.genre}</span>
 
-        <h3 className="mt-1 font-serif text-[16px] leading-[1.3] text-ink">
+        <h3 className="type-section mt-1 text-[16px] leading-[1.3] text-ink">
           <Link
             to={`/stories/${story.slug}`}
             className="underline-offset-4 hover:text-arcane-bright hover:underline"

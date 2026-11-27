@@ -189,7 +189,7 @@ export function EncyclopediaPage() {
               className="shrink-0"
             >
               {label}
-              <span className="font-mono text-[11px] text-ink-faint">{counts[value]}</span>
+              <span className="type-num text-ink-faint">{counts[value]}</span>
             </Tab>
           ))}
         </Tabs>
@@ -234,7 +234,7 @@ export function EncyclopediaPage() {
               >
                 <span className="overline text-brass">{entry.category}</span>
 
-                <span className="mt-2 font-serif text-[17px] leading-[1.3] text-ink group-hover:text-arcane-bright">
+                <span className="mt-2 font-ui text-[14.5px] font-semibold leading-[1.35] text-ink group-hover:text-arcane-bright">
                   {entry.title}
                 </span>
 
@@ -262,7 +262,7 @@ export function EncyclopediaPage() {
                 className="group grid w-full grid-cols-[1fr_auto] items-baseline gap-3 py-3 text-left transition-colors hover:bg-paper-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-arcane-bright sm:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_auto_auto]"
               >
                 <span className="min-w-0">
-                  <span className="block truncate font-serif text-[15.5px] text-ink group-hover:text-arcane-bright">
+                  <span className="block truncate font-ui text-[14px] font-medium text-ink group-hover:text-arcane-bright">
                     {entry.title}
                   </span>
                   <span className="mt-0.5 block truncate text-[12px] text-ink-faint sm:hidden">
@@ -312,7 +312,7 @@ export function EncyclopediaPage() {
                 {openEntry.content.split("\n\n").map((paragraph, index) => (
                   <p
                     key={index}
-                    className="mb-3 font-serif text-[15px] leading-[1.7] text-ink last:mb-0"
+                    className="mb-3 font-reading text-[16.5px] leading-[1.72] text-ink last:mb-0"
                   >
                     {paragraph}
                   </p>

@@ -32,7 +32,7 @@ export function AccountMenu({ className }) {
         >
           <span
             aria-hidden="true"
-            className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border-strong font-serif text-[11px] text-crimson"
+            className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border-strong font-ui font-semibold text-[11px] text-crimson"
           >
             {getInitials(name)}
           </span>

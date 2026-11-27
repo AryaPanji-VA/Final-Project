@@ -140,10 +140,10 @@ export function HomePage() {
                 to={`/stories?genre=${encodeURIComponent(name)}`}
                 className="group flex items-baseline justify-between gap-3 py-4 pr-4 transition-colors hover:text-arcane-bright sm:px-4 sm:first:pl-0"
               >
-                <span className="font-serif text-[16px] text-ink group-hover:text-arcane-bright">
+                <span className="type-section text-[17px] text-ink group-hover:text-arcane-bright">
                   {name}
                 </span>
-                <span className="font-mono text-[11px] text-ink-faint">
+                <span className="type-meta text-ink-faint">
                   {String(count).padStart(2, "0")}
                 </span>
               </Link>
@@ -190,7 +190,7 @@ export function HomePage() {
           <p className="overline text-brass">About the archive</p>
 
           <div>
-            <h2 className="font-serif text-[clamp(1.5rem,1.2rem+1.4vw,2.25rem)] leading-[1.15] tracking-[-0.02em] text-ink">
+            <h2 className="type-section text-[clamp(1.6rem,1.25rem+1.4vw,2.35rem)] text-ink">
               Three kinds of work, kept separately.
             </h2>
 
@@ -210,7 +210,7 @@ export function HomePage() {
                 },
               ].map((item) => (
                 <div key={item.title} className="border-t border-brass/30 pt-4">
-                  <h3 className="font-serif text-[16px] text-ink">{item.title}</h3>
+                  <h3 className="type-display text-[14px] text-brass">{item.title}</h3>
                   <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{item.body}</p>
                 </div>
               ))}

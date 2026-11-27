@@ -149,12 +149,12 @@ export function StoryReaderPage() {
             {story.title}
           </Link>
 
-          <p className="mt-4 font-mono text-[11.5px] uppercase tracking-[0.1em] text-ink-faint">
+          <p className="type-meta mt-4 text-ink-faint">
             Chapter {String(chapter.index).padStart(2, "0")} of{" "}
             {String(published.length).padStart(2, "0")}
           </p>
 
-          <h1 className="mt-2 font-serif text-[clamp(1.75rem,1.3rem+1.8vw,2.5rem)] leading-[1.12] tracking-[-0.02em] text-ink">
+          <h1 className="type-page mt-2 text-[clamp(1.9rem,1.4rem+1.9vw,2.7rem)] text-ink">
             {chapter.title}
           </h1>
 
@@ -228,7 +228,7 @@ export function StoryReaderPage() {
                     : "text-ink-muted hover:bg-paper-muted/60 hover:text-ink",
                 )}
               >
-                <span className="w-6 shrink-0 font-mono text-[11px] text-ink-faint">
+                <span className="type-num w-6 shrink-0 text-ink-faint">
                   {String(item.index).padStart(2, "0")}
                 </span>
                 <span className="truncate">{item.title}</span>
@@ -247,7 +247,7 @@ export function StoryReaderPage() {
               <ArrowLeft className="size-4 shrink-0 text-ink-faint" aria-hidden="true" />
               <span className="min-w-0">
                 <span className="overline block text-ink-faint">Previous</span>
-                <span className="mt-1 block truncate font-serif text-[15px] text-ink group-hover:text-arcane-bright">
+                <span className="type-section mt-1 block truncate text-[16px] text-ink group-hover:text-arcane-bright">
                   {previous.title}
                 </span>
               </span>
@@ -263,7 +263,7 @@ export function StoryReaderPage() {
             >
               <span className="min-w-0">
                 <span className="overline block text-ink-faint">Next</span>
-                <span className="mt-1 block truncate font-serif text-[15px] text-ink group-hover:text-arcane-bright">
+                <span className="type-section mt-1 block truncate text-[16px] text-ink group-hover:text-arcane-bright">
                   {next.title}
                 </span>
               </span>

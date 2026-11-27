@@ -60,7 +60,7 @@ export function PublicLayout({ children }) {
               className="flex min-h-11 shrink-0 items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-arcane-bright focus-visible:ring-offset-4 focus-visible:ring-offset-paper sm:min-h-0"
             >
               <BookMarked className="size-[18px] text-brass" aria-hidden="true" />
-              <span className="flex min-h-11 items-center font-serif text-[19px] tracking-[-0.01em] text-ink sm:min-h-0">
+              <span className="flex min-h-11 items-center type-display text-[17px] text-ink sm:min-h-0">
                 Lorekeeper
               </span>
             </Link>
@@ -187,7 +187,7 @@ export function PublicLayout({ children }) {
       <footer className="mt-16 border-t border-border">
         <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 px-5 py-10 sm:px-8 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-serif text-[17px] text-ink">Lorekeeper</p>
+            <p className="type-display text-[16px] text-ink">Lorekeeper</p>
             <p className="mt-1.5 max-w-[46ch] text-[13px] leading-relaxed text-ink-muted">
               Every world has a story. Every story has a place.
             </p>

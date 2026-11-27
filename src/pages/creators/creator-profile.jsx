@@ -72,7 +72,7 @@ export function CreatorProfilePage() {
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-10">
           <span
             aria-hidden="true"
-            className="flex size-20 shrink-0 items-center justify-center border border-border-strong font-serif text-[28px] text-crimson"
+            className="flex size-20 shrink-0 items-center justify-center border border-border-strong font-ui text-[26px] font-semibold text-crimson"
           >
             {getInitials(creator.name)}
           </span>
@@ -80,11 +80,11 @@ export function CreatorProfilePage() {
           <div className="min-w-0 flex-1">
             <p className="overline text-arcane-bright">Creator</p>
 
-            <h1 className="mt-3 font-serif text-[clamp(2rem,1.4rem+2.4vw,3rem)] leading-[1.06] tracking-[-0.025em] text-ink">
+            <h1 className="type-display mt-3 text-[clamp(1.85rem,1.4rem+2vw,2.7rem)] text-ink">
               {creator.name}
             </h1>
 
-            <p className="mt-2 font-mono text-[12px] text-ink-faint">
+            <p className="type-num mt-2 text-ink-faint">
               @{creator.handle}
               {creator.location ? (
                 <>

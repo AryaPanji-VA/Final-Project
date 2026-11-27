@@ -94,7 +94,7 @@ export function LibraryPage() {
                         story={story}
                         trailing={
                           <div className="text-right">
-                            <p className="font-mono text-[11px] text-ink-faint">{percent}%</p>
+                            <p className="type-num text-ink-faint">{percent}%</p>
                             <Link
                               to={`/stories/${story.slug}/read/${chapterId}`}
                               className="mt-1 inline-flex min-h-11 items-center text-[12px] text-arcane-bright underline-offset-4 hover:underline sm:min-h-0"

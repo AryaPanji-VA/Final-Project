@@ -13,7 +13,7 @@ export function EmptyState({ title, description, action, icon: Icon, className, 
 
       {children}
 
-      <p className="font-serif text-[20px] leading-snug text-ink">{title}</p>
+      <p className="type-section text-[21px] leading-snug text-ink">{title}</p>
 
       {description ? (
         <p className="mx-auto mt-2.5 max-w-[46ch] text-[13.5px] leading-relaxed text-ink-muted">

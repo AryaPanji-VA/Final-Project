@@ -195,7 +195,7 @@ export function ChapterEditorPage() {
                 setTitle(event.target.value);
                 setIsDirty(true);
               }}
-              className="h-11 font-serif text-[16px]"
+              className="h-11 font-reading text-[17px]"
               placeholder="Chapter title"
             />
           </Field>
@@ -258,7 +258,7 @@ export function ChapterEditorPage() {
               <Minus className="size-4" aria-hidden="true" />
             </button>
 
-            <span className="ml-auto pr-1 font-mono text-[11px] text-ink-faint">
+            <span className="type-num ml-auto pr-1 text-ink-faint">
               {words.toLocaleString("en-GB")} words
             </span>
           </div>
@@ -272,7 +272,7 @@ export function ChapterEditorPage() {
             }}
             placeholder="Begin the chapter. Blank lines separate paragraphs; the reader sets the first letter as a drop cap."
             aria-label="Chapter text"
-            className="min-h-[440px] w-full resize-y bg-transparent px-5 py-5 font-serif text-[17px] leading-[1.75] text-ink placeholder:text-ink-faint focus:outline-none"
+            className="min-h-[440px] w-full resize-y bg-transparent px-5 py-5 font-reading text-[18.5px] leading-[1.78] text-ink placeholder:text-ink-faint focus:outline-none"
           />
         </div>
 

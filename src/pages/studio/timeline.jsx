@@ -166,13 +166,13 @@ export function TimelinePage() {
                     />
 
                     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint">
+                      <p className="type-meta text-ink-faint">
                         {event.date}
                       </p>
                       <CanonBadge status={event.canon} />
                     </div>
 
-                    <h3 className="mt-1.5 font-serif text-[clamp(1.125rem,1rem+0.5vw,1.375rem)] leading-snug text-ink">
+                    <h3 className="mt-1.5 font-ui text-[15px] font-semibold leading-snug text-ink">
                       {event.title}
                     </h3>
 

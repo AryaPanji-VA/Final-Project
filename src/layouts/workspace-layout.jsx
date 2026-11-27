@@ -111,7 +111,7 @@ export function WorkspaceLayout() {
             className="flex min-h-11 min-w-0 items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-arcane-bright sm:min-h-0"
           >
             <BookMarked className="size-[17px] shrink-0 text-brass" aria-hidden="true" />
-            <span className="hidden truncate font-serif text-[17px] tracking-[-0.01em] text-ink lg:inline">
+            <span className="hidden truncate type-display text-[15px] text-ink lg:inline">
               Lorekeeper
             </span>
           </Link>
@@ -194,7 +194,7 @@ export function WorkspaceLayout() {
                 <Menu className="size-5" aria-hidden="true" />
               </button>
 
-              <p className="truncate font-serif text-[14px] italic text-ink-faint sm:hidden">
+              <p className="truncate font-ui text-[13px] text-ink-faint sm:hidden">
                 The Archive of Imagined Worlds
               </p>
 

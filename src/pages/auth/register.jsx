@@ -48,7 +48,7 @@ export function RegisterPage() {
     <div>
       <p className="overline text-brass">New membership</p>
 
-      <h1 className="mt-3 font-serif text-[clamp(1.75rem,1.4rem+1.2vw,2.25rem)] leading-[1.08] tracking-[-0.025em] text-ink">
+      <h1 className="type-ui-title mt-3 text-[clamp(1.6rem,1.35rem+1vw,2rem)] text-ink">
         Create your account
       </h1>
 

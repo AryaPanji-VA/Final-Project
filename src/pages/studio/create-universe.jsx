@@ -67,7 +67,7 @@ export function CreateUniversePage() {
               <Input
                 id="name"
                 placeholder="e.g. Aethermoor"
-                className="h-11 font-serif text-[17px]"
+                className="h-11 font-display text-[16px] tracking-[0.01em]"
                 invalid={Boolean(errors.name)}
                 {...register("name")}
               />
@@ -151,20 +151,20 @@ export function CreateUniversePage() {
 
           <ol className="mt-4 space-y-4 text-[13px] leading-relaxed text-ink-muted">
             <li>
-              <span className="font-mono text-[11px] text-ink-faint">01</span>
+              <span className="type-meta text-ink-faint">01</span>
               <p className="mt-1">
                 The world gets a plate — its initials set large over a survey grid, the way a chart
                 is titled.
               </p>
             </li>
             <li>
-              <span className="font-mono text-[11px] text-ink-faint">02</span>
+              <span className="type-meta text-ink-faint">02</span>
               <p className="mt-1">
                 You catalogue characters, places, factions, artefacts and myths in the encyclopedia.
               </p>
             </li>
             <li>
-              <span className="font-mono text-[11px] text-ink-faint">03</span>
+              <span className="type-meta text-ink-faint">03</span>
               <p className="mt-1">
                 Events go on the timeline, grouped by era, and stories can be set inside the world.
               </p>

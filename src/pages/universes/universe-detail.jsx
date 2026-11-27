@@ -86,7 +86,7 @@ export function UniverseDetailPage() {
 
           <span
             aria-hidden="true"
-            className="relative font-serif text-[clamp(3rem,2rem+6vw,6rem)] leading-none tracking-[-0.03em] text-crimson/20"
+            className="type-display relative text-[clamp(2.75rem,1.9rem+5vw,5.25rem)] leading-none text-crimson/20"
           >
             {getInitials(universe.name)}
           </span>
@@ -109,7 +109,7 @@ export function UniverseDetailPage() {
       <header className="border-b border-border py-8 sm:py-10">
         <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-start">
           <div className="min-w-0">
-            <h1 className="max-w-[24ch] font-serif text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] leading-[1.04] tracking-[-0.03em] text-ink">
+            <h1 className="type-display max-w-[24ch] text-[clamp(1.85rem,1.4rem+2vw,2.9rem)] text-ink">
               {universe.name}
             </h1>
 
@@ -135,7 +135,7 @@ export function UniverseDetailPage() {
           {universe.stories.length > 0 ? (
             <div className="shrink-0">
               <p className="overline text-ink-faint">Stories set here</p>
-              <p className="mt-1.5 font-serif text-[20px] text-ink">
+              <p className="type-display mt-1.5 text-[19px] leading-none text-brass">
                 {universe.stories.length}
               </p>
             </div>
@@ -177,7 +177,7 @@ export function UniverseDetailPage() {
             className="group flex items-center justify-between gap-3 border border-border px-4 py-3 transition-colors hover:border-ink"
           >
             <span className="min-w-0">
-              <span className="block font-serif text-[15px] text-ink group-hover:text-arcane-bright">
+              <span className="block font-ui text-[14px] font-medium text-ink group-hover:text-arcane-bright">
                 {item.title}
               </span>
               <span className="mt-0.5 block truncate text-[11.5px] text-ink-faint">
@@ -215,12 +215,12 @@ export function UniverseDetailPage() {
                   {group.entries.map((entry) => (
                     <li key={entry.id} className="py-3">
                       <div className="flex items-baseline justify-between gap-3">
-                        <p className="font-serif text-[15.5px] leading-snug text-ink">
+                        <p className="type-section text-[16.5px] leading-snug text-ink">
                           {entry.title}
                         </p>
                         <CanonBadge status={entry.canon} />
                       </div>
-                      <p className="clamp-2 mt-1 text-[12.5px] leading-relaxed text-ink-muted">
+                      <p className="clamp-2 mt-1 font-reading text-[14px] leading-relaxed text-ink-muted">
                         {entry.summary}
                       </p>
                     </li>
@@ -248,11 +248,11 @@ export function UniverseDetailPage() {
                   aria-hidden="true"
                   className="absolute -left-[25px] top-1.5 size-2 -translate-x-1/2 rotate-45 bg-brass"
                 />
-                <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-ink-faint">
+                <p className="type-meta text-ink-faint">
                   {event.era} · {event.date}
                 </p>
-                <h3 className="mt-1 font-serif text-[17px] text-ink">{event.title}</h3>
-                <p className="mt-1 max-w-[58ch] text-[13.5px] leading-relaxed text-ink-muted">
+                <h3 className="type-section mt-1 text-[17.5px] text-ink">{event.title}</h3>
+                <p className="mt-1 max-w-[58ch] font-reading text-[15px] leading-[1.6] text-ink-muted">
                   {event.description}
                 </p>
               </li>
@@ -291,7 +291,7 @@ export function UniverseDetailPage() {
             {universe.campaigns.map((campaign) => (
               <li key={campaign.id} className="flex items-center justify-between gap-4 py-3.5">
                 <div className="min-w-0">
-                  <p className="font-serif text-[15.5px] text-ink">{campaign.title}</p>
+                  <p className="type-section text-[16.5px] text-ink">{campaign.title}</p>
                   <p className="mt-0.5 text-[11.5px] text-ink-faint">
                     {campaign.system} · {campaign.sessions} sessions · {campaign.status}
                   </p>

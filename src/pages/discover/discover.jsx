@@ -163,7 +163,7 @@ export function DiscoverPage() {
 
               <h2
                 id="featured-heading"
-                className="mt-3 max-w-[24ch] font-serif text-[clamp(1.5rem,1.2rem+1.4vw,2.25rem)] leading-[1.1] tracking-[-0.02em] text-ink"
+                className="type-page mt-3 max-w-[24ch] text-[clamp(1.6rem,1.25rem+1.5vw,2.4rem)] text-ink"
               >
                 <Link to={`/stories/${featured.slug}`} className="hover:text-arcane-bright">
                   {featured.title}
@@ -322,7 +322,7 @@ export function DiscoverPage() {
             className="group border border-border p-6 transition-colors hover:border-ink"
           >
             <p className="overline text-ink-faint">Creators</p>
-            <p className="mt-2 font-serif text-[20px] text-ink group-hover:text-arcane-bright">
+            <p className="mt-2 type-section text-[21px] text-ink group-hover:text-arcane-bright">
               Browse everyone publishing here
             </p>
             <p className="mt-1.5 text-[13px] text-ink-muted">
@@ -335,7 +335,7 @@ export function DiscoverPage() {
             className="group border border-border p-6 transition-colors hover:border-ink"
           >
             <p className="overline text-ink-faint">Publish</p>
-            <p className="mt-2 font-serif text-[20px] text-ink group-hover:text-arcane-bright">
+            <p className="mt-2 type-section text-[21px] text-ink group-hover:text-arcane-bright">
               Put your own work on the shelf
             </p>
             <p className="mt-1.5 text-[13px] text-ink-muted">

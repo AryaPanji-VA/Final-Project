@@ -31,13 +31,13 @@ export function AuthLayout({ children }) {
 
         <NavLink to="/" className="relative flex items-center gap-2.5">
           <BookMarked className="size-[18px] text-brass" aria-hidden="true" />
-          <span className="font-serif text-[19px] tracking-[-0.01em] text-ink">Lorekeeper</span>
+          <span className="type-display text-[17.5px] text-ink">Lorekeeper</span>
         </NavLink>
 
         <div className="relative max-w-[46ch]">
           <p className="overline text-brass">The archive of imagined worlds</p>
 
-          <p className="mt-5 font-serif text-[clamp(2.25rem,1.6rem+2.4vw,3.25rem)] leading-[1.06] tracking-[-0.03em] text-ink">
+          <p className="type-display mt-5 text-[clamp(1.9rem,1.45rem+1.9vw,2.7rem)]">
             Every world has a story. Every story has a place.
           </p>
 
@@ -47,7 +47,7 @@ export function AuthLayout({ children }) {
           </p>
 
           <blockquote className="mt-8 border-l-2 border-brass pl-5">
-            <p className="font-serif text-[16px] italic leading-relaxed text-ink-muted">
+            <p className="font-reading text-[17px] italic leading-relaxed text-ink-muted">
               “Between the pages of an unwritten story, a world is already waiting to be found.”
             </p>
           </blockquote>
@@ -59,7 +59,7 @@ export function AuthLayout({ children }) {
       <section className="flex min-h-dvh flex-col items-center justify-center px-5 py-12 sm:px-8">
         <NavLink to="/" className="mb-8 flex items-center gap-2 lg:hidden">
           <BookMarked className="size-[18px] text-brass" aria-hidden="true" />
-          <span className="font-serif text-[19px] tracking-[-0.01em] text-ink">Lorekeeper</span>
+          <span className="type-display text-[17.5px] text-ink">Lorekeeper</span>
         </NavLink>
 
         <div className="w-full max-w-[400px]">{children}</div>

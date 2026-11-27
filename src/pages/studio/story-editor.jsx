@@ -192,7 +192,7 @@ export function StoryEditorPage() {
               <Input
                 id="title"
                 placeholder="e.g. The Last Ember"
-                className="h-11 font-serif text-[17px]"
+                className="h-11 font-reading text-[18px]"
                 invalid={Boolean(errors.title)}
                 {...register("title")}
               />
@@ -307,11 +307,11 @@ export function StoryEditorPage() {
                       to={`/studio/writing/${storyId}/chapter/${chapter.id}`}
                       className="group flex items-baseline gap-3 py-3"
                     >
-                      <span className="w-5 shrink-0 font-mono text-[11px] text-ink-faint">
+                      <span className="type-num w-5 shrink-0 text-ink-faint">
                         {String(chapter.index).padStart(2, "0")}
                       </span>
                       <span className="min-w-0 flex-1">
-                        <span className="block truncate font-serif text-[14.5px] text-ink group-hover:text-arcane-bright">
+                        <span className="block truncate font-ui text-[14px] font-medium text-ink group-hover:text-arcane-bright">
                           {chapter.title}
                         </span>
                         <span className="mt-0.5 block text-[11px] text-ink-faint">

@@ -167,7 +167,7 @@ export function WorldsPage() {
                   >
                     <span className="min-w-0 flex-1">
                       <span className="flex flex-wrap items-center gap-2">
-                        <span className="font-serif text-[17.5px] text-ink group-hover:text-arcane-bright">
+                        <span className="type-display text-[16.5px] text-ink group-hover:text-arcane-bright">
                           {universe.name}
                         </span>
                         <GenreTag>{universe.genre}</GenreTag>

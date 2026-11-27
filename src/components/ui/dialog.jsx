@@ -78,7 +78,7 @@ function DialogFooter({ className, ...props }) {
 function DialogTitle({ className, ...props }) {
   return (
     <DialogPrimitive.Title
-      className={cn("font-serif text-[22px] leading-[1.2] text-ink", className)}
+      className={cn("type-section text-[22px] text-ink", className)}
       {...props}
     />
   );
@@ -87,7 +87,7 @@ function DialogTitle({ className, ...props }) {
 function DialogDescription({ className, ...props }) {
   return (
     <DialogPrimitive.Description
-      className={cn("text-[13.5px] leading-relaxed text-ink-muted", className)}
+      className={cn("font-ui text-[13.5px] leading-relaxed text-ink-muted", className)}
       {...props}
     />
   );

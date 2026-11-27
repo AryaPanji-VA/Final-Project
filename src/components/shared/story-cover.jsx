@@ -96,7 +96,7 @@ export function StoryCover({ story, className, size = "md", children }) {
       <div className="relative flex items-start justify-between gap-2">
         <span
           className={cn(
-            "border px-1 py-px font-sans text-[6.5px] font-semibold uppercase leading-none tracking-[0.12em]",
+            "border px-1 py-px font-ui text-[6.5px] font-semibold uppercase leading-none tracking-[0.12em]",
             tone.badge,
           )}
         >
@@ -104,7 +104,7 @@ export function StoryCover({ story, className, size = "md", children }) {
         </span>
 
         {!scale.hideMeta ? (
-          <span className={cn("font-mono text-[8px] uppercase tracking-[0.1em]", tone.meta)}>
+          <span className={cn("font-ui text-[8px] tabular-nums uppercase tracking-[0.1em]", tone.meta)}>
             {story.id?.replace("st-", "№").toUpperCase()}
           </span>
         ) : null}
@@ -113,7 +113,7 @@ export function StoryCover({ story, className, size = "md", children }) {
       {/* The cover's title is set as artwork, not as a document heading: the
           card or page that owns this cover already carries the real heading,
           so an h3 here would duplicate it and break heading order. */}
-      <p className={cn("relative font-serif tracking-[-0.01em]", scale.title)}>
+      <p className={cn("relative font-reading font-medium tracking-[0.005em]", scale.title)}>
         {story.title}
       </p>
 
@@ -124,7 +124,7 @@ export function StoryCover({ story, className, size = "md", children }) {
             className={cn("mb-2 block h-px w-6", tone.rule.replace("bg-", "bg-"))}
           />
         ) : null}
-        <p className={cn("font-sans uppercase leading-none tracking-[0.1em]", scale.meta, tone.meta)}>
+        <p className={cn("font-ui uppercase leading-none tracking-[0.1em]", scale.meta, tone.meta)}>
           {story.author?.name ?? "Unattributed"}
         </p>
       </div>

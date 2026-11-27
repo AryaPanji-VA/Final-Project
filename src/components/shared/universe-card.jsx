@@ -26,12 +26,12 @@ export function UniverseCover({ universe, className, children }) {
       {/* Ornament, not content: the card's heading carries the world's name. */}
       <span
         aria-hidden="true"
-        className="relative font-serif text-[clamp(2rem,1.2rem+3vw,3.5rem)] leading-none tracking-[-0.02em] text-crimson-bright/30"
+        className="type-display relative text-[clamp(1.9rem,1.2rem+2.6vw,3.15rem)] leading-none text-crimson-bright/30"
       >
         {getInitials(universe.name)}
       </span>
 
-      <span className="absolute left-3 top-3 border border-ink/25 px-1.5 py-0.5 font-sans text-[9px] font-semibold uppercase leading-none tracking-[0.12em] text-ink/70">
+      <span className="absolute left-3 top-3 border border-ink/25 px-1.5 py-0.5 font-ui text-[9px] font-semibold uppercase leading-none tracking-[0.12em] text-ink/70">
         {universe.genre}
       </span>
 
@@ -69,7 +69,7 @@ export function UniverseCard({ universe, className, showCreator = false, meta = 
         <UniverseCover universe={universe} />
 
         <div className="p-4">
-          <h3 className="font-serif text-[17px] leading-[1.3] text-ink group-hover:text-arcane-bright">
+          <h3 className="type-display text-[16px] leading-[1.35] text-ink group-hover:text-arcane-bright">
             {universe.name}
           </h3>
 
@@ -112,12 +112,12 @@ export function UniverseRow({ universe, className }) {
         className,
       )}
     >
-      <span className="flex size-10 shrink-0 items-center justify-center border border-border font-serif text-[13px] text-crimson transition-colors group-hover:border-ink">
+      <span className="flex size-10 shrink-0 items-center justify-center border border-border font-ui font-semibold text-[13px] text-crimson transition-colors group-hover:border-ink">
         {getInitials(universe.name)}
       </span>
 
       <span className="min-w-0 flex-1">
-        <span className="block font-serif text-[15px] leading-tight text-ink group-hover:text-arcane-bright">
+        <span className="block type-display text-[14.5px] leading-tight text-ink group-hover:text-arcane-bright">
           {universe.name}
         </span>
         <span className="mt-0.5 block text-[11.5px] text-ink-faint">

@@ -111,7 +111,7 @@ export function StoryDetailPage() {
               ) : null}
             </div>
 
-            <h1 className="mt-4 font-serif text-[clamp(2rem,1.4rem+2.8vw,3.25rem)] leading-[1.04] tracking-[-0.03em] text-ink">
+            <h1 className="type-page mt-4 text-[clamp(2.1rem,1.45rem+2.6vw,3.35rem)] text-ink">
               {story.title}
             </h1>
 
@@ -200,7 +200,7 @@ export function StoryDetailPage() {
               ].map(([label, value]) => (
                 <div key={label}>
                   <dt className="overline text-ink-faint">{label}</dt>
-                  <dd className="mt-1.5 font-mono text-[12.5px] text-ink">{value}</dd>
+                  <dd className="type-num mt-1.5 text-[12.5px] text-ink">{value}</dd>
                 </div>
               ))}
             </dl>
@@ -212,7 +212,7 @@ export function StoryDetailPage() {
         {/* Chapter list */}
         <section aria-labelledby="chapters-heading">
           <div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
-            <h2 id="chapters-heading" className="font-serif text-[22px] text-ink">
+            <h2 id="chapters-heading" className="type-section text-[23px] text-ink">
               Chapters
             </h2>
             <span className="overline text-ink-faint">
@@ -236,12 +236,12 @@ export function StoryDetailPage() {
                         to={`/stories/${story.slug}/read/${chapter.id}`}
                         className="group flex items-baseline gap-4 py-4 transition-colors hover:bg-paper-muted/40"
                       >
-                        <span className="w-7 shrink-0 font-mono text-[12px] text-ink-faint">
+                        <span className="type-num w-7 shrink-0 text-ink-faint">
                           {String(chapter.index).padStart(2, "0")}
                         </span>
 
                         <span className="min-w-0 flex-1">
-                          <span className="block font-serif text-[16.5px] leading-snug text-ink group-hover:text-arcane-bright">
+                          <span className="type-section block text-[17px] leading-snug text-ink group-hover:text-arcane-bright">
                             {chapter.title}
                           </span>
                           <span className="mt-0.5 block text-[11.5px] text-ink-faint">
@@ -260,11 +260,11 @@ export function StoryDetailPage() {
                       </Link>
                     ) : (
                       <div className="flex items-baseline gap-4 py-4 opacity-60">
-                        <span className="w-7 shrink-0 font-mono text-[12px] text-ink-faint">
+                        <span className="type-num w-7 shrink-0 text-ink-faint">
                           {String(chapter.index).padStart(2, "0")}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block font-serif text-[16.5px] leading-snug text-ink-muted">
+                          <span className="type-section block text-[17px] leading-snug text-ink-muted">
                             {chapter.title}
                           </span>
                           <span className="mt-0.5 block text-[11.5px] text-ink-faint">
@@ -286,7 +286,7 @@ export function StoryDetailPage() {
             <p className="overline text-ink-faint">Author</p>
             <Link
               to={`/creators/${story.author?.handle}`}
-              className="mt-2 block font-serif text-[17px] text-ink hover:text-arcane-bright"
+              className="type-display mt-2 block text-[17px] text-ink hover:text-arcane-bright"
             >
               {story.author?.name}
             </Link>
@@ -303,7 +303,7 @@ export function StoryDetailPage() {
               <p className="overline text-ink-faint">Set in</p>
               <Link
                 to={`/universes/${story.universe.id}`}
-                className="mt-2 block font-serif text-[17px] text-ink hover:text-arcane-bright"
+                className="type-display mt-2 block text-[17px] text-ink hover:text-arcane-bright"
               >
                 {story.universe.name}
               </Link>
@@ -335,7 +335,7 @@ export function StoryDetailPage() {
       {/* More by the author */}
       {moreByAuthor.length > 0 ? (
         <section className="mt-16 border-t border-border pt-10">
-          <h2 className="font-serif text-[22px] text-ink">
+          <h2 className="type-section text-[23px] text-ink">
             More by {story.author.name}
           </h2>
 

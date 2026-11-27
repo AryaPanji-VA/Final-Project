@@ -34,7 +34,7 @@ function CardHeader({ className, ...props }) {
 function CardTitle({ className, as: Comp = "h3", ...props }) {
   return (
     <Comp
-      className={cn("font-serif text-[18px] leading-[1.3] text-ink", className)}
+      className={cn("type-section text-[18px] text-ink", className)}
       {...props}
     />
   );
@@ -57,7 +57,7 @@ function Overline({ className, as: Comp = "p", ...props }) {
   return (
     <Comp
       className={cn(
-        "text-[10.5px] font-semibold uppercase leading-none tracking-[0.12em] text-ink-faint",
+        "type-meta text-[10.5px] leading-none text-ink-faint",
         className,
       )}
       {...props}

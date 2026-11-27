@@ -102,7 +102,7 @@ export function WritingStudioPage() {
 
                       <span className="min-w-0 flex-1">
                         <span className="flex flex-wrap items-center gap-2">
-                          <span className="font-serif text-[16.5px] text-ink group-hover:text-arcane-bright">
+                          <span className="font-ui text-[14.5px] font-semibold text-ink group-hover:text-arcane-bright">
                             {story.title}
                           </span>
                           <StatusBadge status={story.status} />
@@ -135,7 +135,7 @@ export function WritingStudioPage() {
                   <div className="min-w-0 flex-1">
                     <Link
                       to={`/studio/writing/${story.id}`}
-                      className="font-serif text-[16px] text-ink hover:text-arcane-bright"
+                      className="font-ui text-[14.5px] font-medium text-ink hover:text-arcane-bright"
                     >
                       {story.title}
                     </Link>

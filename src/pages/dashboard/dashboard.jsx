@@ -156,7 +156,7 @@ export function DashboardPage() {
                       className="group flex items-baseline gap-4 py-3.5"
                     >
                       <span className="min-w-0 flex-1">
-                        <span className="block font-serif text-[16.5px] text-ink group-hover:text-arcane-bright">
+                        <span className="type-section block text-[17px] text-ink group-hover:text-arcane-bright">
                           {universe.name}
                         </span>
                         <span className="mt-0.5 block text-[11.5px] text-ink-faint">
@@ -207,7 +207,7 @@ export function DashboardPage() {
                       story={story}
                       trailing={
                         <div className="text-right">
-                          <p className="font-mono text-[11px] text-ink-faint">{percent}%</p>
+                          <p className="type-num text-ink-faint">{percent}%</p>
                           <Link
                             to={`/stories/${story.slug}/read/${chapterId}`}
                             className="mt-1 inline-flex min-h-11 items-center text-[12px] text-arcane-bright underline-offset-4 hover:underline sm:min-h-0"
@@ -256,7 +256,7 @@ export function DashboardPage() {
                     >
                       <Feather className="size-3.5 shrink-0 text-ink-faint" aria-hidden="true" />
                       <span className="min-w-0 flex-1">
-                        <span className="block font-serif text-[16px] text-ink group-hover:text-arcane-bright">
+                        <span className="type-section block text-[16.5px] text-ink group-hover:text-arcane-bright">
                           {story.title}
                         </span>
                         <span className="mt-0.5 block text-[11.5px] text-ink-faint">
@@ -305,7 +305,7 @@ export function DashboardPage() {
                   className="group border border-border p-5 transition-colors hover:border-ink"
                 >
                   <action.icon className="size-4 text-crimson" aria-hidden="true" />
-                  <p className="mt-3 font-serif text-[16px] text-ink group-hover:text-arcane-bright">
+                  <p className="type-section mt-3 text-[17px] text-ink group-hover:text-arcane-bright">
                     {action.title}
                   </p>
                   <p className="mt-1 text-[12.5px] leading-relaxed text-ink-muted">

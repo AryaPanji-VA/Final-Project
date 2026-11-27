@@ -30,7 +30,7 @@ export function Stat({ value, label, note, className }) {
         className,
       )}
     >
-      <p className="font-serif text-[clamp(1.5rem,1.2rem+1vw,2.125rem)] leading-none tracking-[-0.02em] text-brass">
+      <p className="type-display text-[clamp(1.35rem,1.1rem+0.85vw,1.9rem)] leading-none text-brass">
         {value}
       </p>
 
