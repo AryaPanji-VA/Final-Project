@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 import { creatorService, storyService, universeService } from "@/services/mock-api";
@@ -50,14 +50,6 @@ export function HomePage() {
     .slice(0, 10);
 
   const topCreators = [...creators].sort((a, b) => b.followers - a.followers).slice(0, 3);
-
-  // Genre counts come from the data, never a hand-written seed list — a static
-  // list drifts the moment a story is published.
-  const genres = useMemo(() => {
-    const counts = new Map();
-    for (const story of stories) counts.set(story.genre, (counts.get(story.genre) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 4);
-  }, [stories]);
 
   if (error) {
     return (
@@ -129,29 +121,6 @@ export function HomePage() {
         )}
       </section>
 
-      {/* Browse by genre — a rule-separated index, not chips in a cloud. */}
-      <section className="mt-16 border-t border-border pt-10">
-        <SectionHead overline="Browse" title="By genre" rule={false} />
-
-        <ul className="mt-6 grid grid-cols-1 border-t border-border sm:grid-cols-2 lg:grid-cols-4">
-          {genres.map(([name, count]) => (
-            <li key={name} className="border-b border-border sm:border-r last:sm:border-r-0">
-              <Link
-                to={`/stories?genre=${encodeURIComponent(name)}`}
-                className="group flex items-baseline justify-between gap-3 py-4 pr-4 transition-colors hover:text-arcane-bright sm:px-4 sm:first:pl-0"
-              >
-                <span className="type-section text-[17px] text-ink group-hover:text-arcane-bright">
-                  {name}
-                </span>
-                <span className="type-meta text-ink-faint">
-                  {String(count).padStart(2, "0")}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       {/* Creators */}
       <section className="mt-16 border-t border-border pt-10">
         <SectionHead
@@ -184,46 +153,6 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* What Lorekeeper is — a closing editorial statement on the wine panel. */}
-      <section className="mt-20 border-y border-crimson/30 bg-parchment py-14">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
-          <p className="overline text-brass">About the archive</p>
-
-          <div>
-            <h2 className="type-section text-[clamp(1.6rem,1.25rem+1.4vw,2.35rem)] text-ink">
-              Three kinds of work, kept separately.
-            </h2>
-
-            <div className="mt-6 grid gap-6 sm:grid-cols-3">
-              {[
-                {
-                  title: "Stories",
-                  body: "Serialised fiction with chapters, drafts and a reading experience built for long text.",
-                },
-                {
-                  title: "Universes",
-                  body: "The world behind the work: characters, places, factions, artefacts and a timeline.",
-                },
-                {
-                  title: "Campaigns",
-                  body: "A game master's workspace — quests, NPCs, encounters and session notes.",
-                },
-              ].map((item) => (
-                <div key={item.title} className="border-t border-brass/30 pt-4">
-                  <h3 className="type-display text-[14px] text-brass">{item.title}</h3>
-                  <p className="mt-1.5 text-[13px] leading-relaxed text-ink-muted">{item.body}</p>
-                </div>
-              ))}
-            </div>
-
-            <p className="mt-6 max-w-[62ch] text-[13.5px] leading-relaxed text-ink-muted">
-              They can exist independently or reference one another. A story does not need a
-              universe, and a campaign does not need a story — but when they are linked, the archive
-              remembers how.
-            </p>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
