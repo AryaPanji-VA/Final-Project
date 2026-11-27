@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 
 import { registerSchema } from "@/schemas/auth-schema";
 import { register as registerUser } from "@/services/mock-api";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field } from "@/components/ui/field";
 
 export function RegisterPage() {
   const { loginSuccess } = useAuth();
@@ -18,63 +19,131 @@ export function RegisterPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(registerSchema),
-    defaultValues: { name: "", email: "", password: "" },
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
+    mode: "onBlur",
   });
+
+  const password = useWatch({ control, name: "password" }) ?? "";
+  const confirmPassword = useWatch({ control, name: "confirmPassword" }) ?? "";
+  const passwordIsValid = password.length >= 8;
+  const passwordsMatch = confirmPassword.length > 0 && password === confirmPassword;
 
   async function onSubmit(values) {
     setServerError(null);
+
     try {
       const session = await registerUser(values);
       loginSuccess(session);
       navigate("/", { replace: true });
     } catch (error) {
-      setServerError(error.message ?? "Pendaftaran gagal. Coba lagi.");
+      setServerError(error.message ?? "Registration failed. Please try again.");
     }
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Buat akun Lorekeeper</CardTitle>
-        <CardDescription>Mulai dokumentasi dunia pertama kamu.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className="space-y-1.5">
-            <label htmlFor="name" className="text-sm font-medium">Nama</label>
-            <Input id="name" placeholder="Nama kamu" {...register("name")} />
-            {errors.name ? <p className="text-xs text-destructive">{errors.name.message}</p> : null}
-          </div>
+    <div>
+      <p className="overline text-brass">New membership</p>
 
-          <div className="space-y-1.5">
-            <label htmlFor="email" className="text-sm font-medium">Email</label>
-            <Input id="email" type="email" placeholder="nama@contoh.com" {...register("email")} />
-            {errors.email ? <p className="text-xs text-destructive">{errors.email.message}</p> : null}
-          </div>
+      <h1 className="mt-3 font-serif text-[clamp(1.75rem,1.4rem+1.2vw,2.25rem)] leading-[1.08] tracking-[-0.025em] text-ink">
+        Create your account
+      </h1>
 
-          <div className="space-y-1.5">
-            <label htmlFor="password" className="text-sm font-medium">Password</label>
-            <Input id="password" type="password" placeholder="Minimal 8 karakter" {...register("password")} />
-            {errors.password ? <p className="text-xs text-destructive">{errors.password.message}</p> : null}
-          </div>
+      <p className="mt-3 text-[14px] leading-[1.65] text-ink-muted">
+        Start with one world, or one story. Both are enough to begin.
+      </p>
 
-          {serverError ? <p className="text-sm text-destructive">{serverError}</p> : null}
+      <form className="mt-8 space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <Field label="Name" htmlFor="name" error={errors.name?.message}>
+          <Input
+            id="name"
+            autoComplete="name"
+            placeholder="How you sign your work"
+            invalid={Boolean(errors.name)}
+            {...register("name")}
+          />
+        </Field>
 
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Memproses..." : "Daftar"}
-          </Button>
-        </form>
+        <Field label="Email" htmlFor="email" error={errors.email?.message}>
+          <Input
+            id="email"
+            type="email"
+            autoComplete="email"
+            placeholder="keeper@example.com"
+            invalid={Boolean(errors.email)}
+            {...register("email")}
+          />
+        </Field>
 
-        <p className="mt-4 text-center text-sm text-muted-foreground">
-          Sudah punya akun?{" "}
-          <Link to="/login" className="font-medium text-primary hover:underline">
-            Masuk
+        <Field
+          label="Password"
+          htmlFor="password"
+          error={errors.password?.message}
+          hint={passwordIsValid ? "Long enough." : "At least 8 characters."}
+          hintTone={passwordIsValid ? "success" : "faint"}
+        >
+          <Input
+            id="password"
+            type="password"
+            autoComplete="new-password"
+            placeholder="At least 8 characters"
+            invalid={Boolean(errors.password)}
+            {...register("password")}
+          />
+        </Field>
+
+        <Field
+          label="Confirm password"
+          htmlFor="confirmPassword"
+          error={errors.confirmPassword?.message}
+          hint={passwordsMatch ? "Passwords match." : undefined}
+          hintTone="success"
+        >
+          <Input
+            id="confirmPassword"
+            type="password"
+            autoComplete="new-password"
+            placeholder="Repeat your password"
+            invalid={Boolean(errors.confirmPassword)}
+            {...register("confirmPassword")}
+          />
+        </Field>
+
+        {serverError ? (
+          <p
+            role="alert"
+            className="border-l-2 border-alert bg-alert/5 py-2 pl-3 text-[13px] text-alert"
+          >
+            {serverError}
+          </p>
+        ) : null}
+
+        <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+              Creating account…
+            </>
+          ) : (
+            "Create account"
+          )}
+        </Button>
+      </form>
+
+      <div className="mt-8 border-t border-border pt-4">
+        <p className="text-[13px] text-ink-muted">
+          Already a member?{" "}
+          <Link
+            to="/login"
+            className="text-arcane-bright underline-offset-4 transition-colors hover:underline"
+          >
+            Sign in
           </Link>
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -1,409 +1,565 @@
 # Lorekeeper — Visual Design & UI Specification
 
-Versi: 1.0 · Basis: kode existing di `~/Projects/LoreKeeper` (React + Vite, Tailwind v4, Shadcn-style, React Router, RHF, Zod, Lucide).
+**Version:** 2.1 · **Status:** Active — supersedes v1.0
+**Stack:** React + Vite, Tailwind CSS v4, React Router, React Hook Form, Zod, Lucide.
+**Scope:** visual identity and interface craft. Product behaviour is unchanged.
 
-Dokumen ini adalah spesifikasi, bukan kode. Semua nama token mengacu pada konvensi Tailwind v4 (`--color-*` di `@theme`) supaya bisa langsung ditranskripsi ke `src/index.css` dan class utility (`bg-surface`, `text-ivory`, dll).
+> v1.0 described a dark-olive archive with gold accents and Indonesian copy.
+> v2.0 moved to a paper-and-ink editorial system. **v2.1 keeps the editorial
+> discipline of v2.0 and replaces its atmosphere**: the archive is now a dark
+> fantasy library — obsidian, blood wine, arcane blue, aged parchment — read
+> through modern typography and spacing.
 
----
-
-## 1. Arah Visual
-
-Konsep gabungan: **Dark Academia × Fantasy Encyclopedia × Modern Editorial**.
-
-Prinsip yang mengikat semua keputusan:
-
-1. **Arsip, bukan dashboard.** Konten didominasi teks editorial yang dibaca, bukan grid metrik. Statistik ditulis seperti angka folio (serif besar + caption kecil), bukan KPI card berwarna.
-2. **Satu aksen hangat per layar.** Gold (#C8A24B) hanya untuk: indikator aktif, fokus, dan satu tindakan utama per halaman. Sage (#8FA08B) untuk status dan kategori. Tidak ada gradien selain overlay gelap di cover image.
-3. **Hierarki lewat tipografi dan ruang, bukan warna.** Judul serif Newsreader, body Inter, kontras teks utama vs sekunder 2 tingkat saja (ivory vs gray-green).
-4. **Radius kecil (6–10px), border 1px, shadow nyaris tak terlihat.** Kedalaman datang dari perbedaan tone surface (bg → surface → card), bukan drop shadow.
-5. **Motion minimal:** 150–200ms, hanya opacity/transform/color. Skeleton, bukan spinner, untuk area konten.
-
-Anti-pattern yang dilarang (sesuai brief): glassmorphism, gradien dekoratif, kartu super-round (radius ≥16px), ikon berwarna-warni, admin KPI strip, emas berlebihan.
+This document is the source of truth for appearance. Where it disagrees with
+older code, the document wins. Where it disagrees with working behaviour, the
+behaviour wins.
 
 ---
 
-## 2. Palet Warna (HEX)
+## 1. Product Identity
 
-Aplikasi berpindah dari tema terang existing ke tema gelap. Ganti nilai `@theme` di `src/index.css`, struktur token tidak berubah.
+Lorekeeper is a creative publishing and worldbuilding platform: serialised
+fiction, structured fictional worlds, and tabletop campaigns in one archive.
 
-### Permukaan (gelap → sedikit lebih terang)
+**Every world has a story. Every story has a place.**
 
-| Token | HEX | Penggunaan |
+### 1.1 The new visual thesis
+
+**Dark Medieval Fantasy × Modern Editorial.**
+
+The interface should feel like a reading room in a very old building that has
+been re-catalogued by a contemporary publisher:
+
+- the light is low and warm, the walls are dark;
+- the type is modern, generous, and legible;
+- the ornament is sparse, hand-placed, and always in service of hierarchy;
+- nothing is decorated that is not first useful.
+
+It is **not** a medieval website template. No faux wood, no blackletter body
+text, no drop-shadowed serif on every heading, no parchment texture behind
+paragraphs. The medieval reference lives in *material and mood*: ink, vellum,
+brass fittings, wine-dark cloth, blue glass. The modern reference lives in
+*structure*: grid, measure, rhythm, contrast, restraint.
+
+### 1.2 Four principles
+
+1. **The archive is dark; the reading is lit.**
+   The application is obsidian. Light is a material that gets *spent* on the
+   things that matter: a featured cover, the open chapter, the active entry.
+   A page should have one lit place.
+
+2. **Typography is the ornament.**
+   Hierarchy comes from scale, measure, and letterspacing — not from boxes,
+   shadows, or colour. When a section needs weight, the answer is a larger
+   serif or a wider margin, not a card.
+
+3. **Ornament must be earned.**
+   Rules, ticks, diamonds, folios, and boxed labels appear where they carry
+   meaning (a section break, a canon status, a date). Decorative flourish for
+   its own sake is a defect.
+
+4. **Asymmetry over symmetry, sequence over grid.**
+   Pages read top-to-bottom like a printed spread. A three-column grid of
+   identical cards is the fallback, not the default. Where a composition can
+   be asymmetric — a wide text column beside a narrow marginalia rail, a cover
+   that breaks its container, a caption that hangs left of the plate — it
+   should be.
+
+### 1.3 Anti-patterns
+
+Glassmorphism. Decorative gradients as fills. Purple/blue "SaaS" gradients.
+Emoji. Coloured icon sets. KPI tile strips. Super-rounded cards (radius ≥ 12px).
+Heavy textures behind body text. Crimson *and* blue *and* brass competing in one
+view. Ornament density that outruns content density.
+
+---
+
+## 2. Colour
+
+### 2.1 Roles, not decoration
+
+Each accent has exactly one job. They are not interchangeable.
+
+| Role | Token | Job |
 |---|---|---|
-| `--color-background` | `#141613` | Primary background app (charcoal kehijauan) |
-| `--color-surface` | `#1B1E1A` | Secondary background, sidebar, area sekunder (dark olive) |
-| `--color-card` | `#232721` | Card background, form container, dialog |
-| `--color-elevated` | `#2B302A` | Hover surface, tab aktif, dropdown, table row hover |
+| **Crimson** | `crimson` / `crimson-bright` | Action and consequence: primary buttons, the active nav mark, destructive intent, "this is live". |
+| **Arcane blue** | `arcane` / `arcane-bright` | Navigation and reference: links, focus rings, selected states, progress, the reading UI. |
+| **Parchment** | `parchment` / `parchment-dim` | Editorial emphasis: pull quotes, era labels, folios, the featured kicker. Never a fill for a large surface except the wine panel below. |
+| **Brass** | `brass` | Fittings only: hairline ornaments, the diamond tick on a rule, a single boxed label border. Never text, never a button. |
+| **Blood wine** | `wine` | A raised editorial surface — the "lit" panel that holds a featured item or an epigraph. |
 
-### Teks
+Rule of thumb: **one crimson thing, one blue thing, and brass as a garnish per
+screen.** If a view needs a third accent, it needs a better hierarchy instead.
 
-| Token | HEX | Penggunaan |
-|---|---|---|
-| `--color-foreground` (ivory) | `#EAE6DA` | Primary text, judul |
-| `--color-muted-foreground` | `#9AA093` | Secondary text, deskripsi, caption (desaturated gray-green) |
-| `--color-faint` | `#6B7267` | Tersier: placeholder, disabled text, meta kecil |
+### 2.2 Semantic tokens (dark — default)
 
-### Aksen
+Contrast ratios measured against `paper` (#111216) unless noted. All body and
+meta text meets WCAG AA (4.5:1); the lowest text token is `ink-faint` at 5.5:1.
 
-| Token | HEX | Penggunaan |
-|---|---|---|
-| `--color-primary` (antique gold) | `#C8A24B` | Primary accent: indikator aktif, link, tombol utama, focus ring |
-| `--color-primary-hover` | `#D9B55F` | Hover state gold |
-| `--color-primary-muted` | `rgba(200,162,75,0.12)` | Background tipis gold (selected row, badge aktif) |
-| `--color-secondary` (muted sage) | `#8FA08B` | Secondary accent: kategori, badge status, ikon sekunder |
-| `--color-secondary-muted` | `rgba(143,160,139,0.12)` | Background tipis sage |
+| Token | Value | Use | Ratio |
+|---|---|---|---|
+| `--color-paper` | `#111216` | Page ground (obsidian) | — |
+| `--color-surface` | `#191A20` | Panels, sidebar, sheets | — |
+| `--color-paper-muted` | `#1F2128` | Raised rows, hover, inputs | — |
+| `--color-parchment` | `#24191D` | Blood-wine panel | — |
+| `--color-ink` | `#EDE7DA` | Primary text, headings | 15.2 |
+| `--color-ink-muted` | `#ADA69A` | Secondary text, standfirsts | 7.8 |
+| `--color-ink-faint` | `#918B7F` | Meta, folios, placeholders | 5.5 |
+| `--color-crimson` | `#702D3B` | Primary action fill | 1.9 (fill only) |
+| `--color-crimson-deep` | `#561F2C` | Primary action hover | — |
+| `--color-crimson-bright` | `#CE7178` | Crimson *text*, active mark, live status | 5.6 |
+| `--color-arcane` | `#263B59` | Arcane fill (badge, quiet selected) | — |
+| `--color-arcane-deep` | `#1B2A40` | Arcane hover | — |
+| `--color-arcane-bright` | `#8FA7DC` | Links, focus ring, progress, reader chrome | 7.8 |
+| `--color-brass` | `#B39459` | Ornament, rules, tick marks | 6.5 |
+| `--color-brass-quiet` | `#8A7A5C` | Era labels, muted ornament text | 4.6 |
+| `--color-border` | `#2A2B33` | Hairlines (1px, everywhere) | — |
+| `--color-border-strong` | `#3A3C46` | Divider emphasis, field border | — |
+| `--color-control` | `#5A5C68` | Form control border (3:1 non-text) | — |
+| `--color-positive` | `#8AAE80` | Canon, published, saved | 7.5 |
+| `--color-caution` | `#D2A45E` | Draft, pending | 8.2 |
+| `--color-alert` | `#E08268` | Error, destructive text | 6.7 |
+| `--color-onaccent` | `#F3E9EB` | Text on crimson/arcane fills | 8.0 on crimson |
 
-### Border & kontrol
+Ivory text on a crimson fill is 8.0:1; on an arcane fill 9.2:1. Never put
+`ink-muted` on an accent fill — it is a fill colour pair, not a text pair.
 
-| Token | HEX |
+### 2.3 Parchment theme (reader only)
+
+The immersive reader offers a light "Parchment" theme, because long-form
+reading in the dark is not always what a reader wants. It is a **paper**
+theme, not an inversion: warm vellum, black ink, wine headings.
+
+| Token | Value |
 |---|---|
-| `--color-border` | `#2E332C` (subtle warm gray, 1px, digunakan global) |
-| `--color-border-strong` | `#3D4339` (divider menonjol, input focus) |
-| `--color-input` | `#3D4339` |
+| `--color-paper` | `#E8E0CE` |
+| `--color-surface` | `#F1EBDC` |
+| `--color-paper-muted` | `#DCD2BE` |
+| `--color-ink` | `#14151A` |
+| `--color-ink-muted` | `#3A3830` |
+| `--color-ink-faint` | `#5A564B` |
+| `--color-crimson` | `#6E2B37` |
+| `--color-arcane-bright` | `#243A5E` |
+| `--color-border` | `#C9BFA8` |
+| `--color-border-strong` | `#B0A48A` |
 
-### Status
+Applied by `[data-theme="parchment"]` on `<html>`; scoped to the reader layout
+and cleaned up on exit.
 
-| Token | HEX | Penggunaan |
-|---|---|---|
-| `--color-success` | `#7C9A6D` | Canon entry, simpan berhasil |
-| `--color-warning` | `#D9A441` | Draft / canon-status caution |
-| `--color-destructive` | `#C0603F` | Error, hapus (terracotta, bukan merah murni, agar tetap hangat) |
-| `--color-destructive-muted` | `rgba(192,96,63,0.14)` | Background error banner |
+### 2.4 Legacy token aliases
 
-Kontras: ivory di `#141613` ≈ 13:1; muted-foreground ≈ 5.6:1 (lolos AA untuk teks kecil); gold di background gelap ≈ 6:1. Aman.
+v2.0 component code referred to `forest`, `moss`, `cobalt`, `brass-decor`. The
+v2.1 sweep replaced every one of those references in `src/`, so no component
+depends on them any more. They remain defined in `index.css` as inert pointers,
+so a stale snippet or an old branch resolves to the right colour instead of
+rendering transparent:
+
+```
+--color-forest        → crimson          (#702D3B)
+--color-forest-deep   → crimson-deep     (#561F2C)
+--color-moss          → brass-quiet      (#9B8A66)
+--color-moss-soft     → #6B5A44
+--color-cobalt        → arcane-bright    (#8FA7DC)
+--color-cobalt-deep   → #A9BEEA
+--color-brass-decor   → brass            (#B39459)
+```
+
+New code must use the semantic names in §2.2. Any *fill* that previously paired
+`bg-forest`/`bg-cobalt` with `text-surface` or `text-paper` must pair with
+`text-onaccent` instead — dark-on-dark fails.
+
+Two colour pairs are deliberately **not** tokenised, because they belong to the
+cover artwork rather than the interface (see §6.5): the vellum plate
+`#D9CFBA` / `#14151A` (11.8:1) and the brass plate `#3A2E20` / `#D8C49A`
+(7.7:1).
 
 ---
 
-## 3. Tipografi
+## 3. Typography
 
-Font tetap dari theme existing: **Newsreader** (serif, editorial) dan **Inter** (sans, UI). Tambah bobot 700 untuk Inter di import.
+**Newsreader** (variable, optical 6–72) for display and long-form reading.
+**Inter** for interface, labels, and metadata. **JetBrains Mono** for folios,
+dates, counts, and archive IDs. No third family.
 
-### Skala
+### 3.1 Scale
 
-| Peran | Font | Size / line-height | Weight | Tracking |
+| Role | Family | Size / LH | Weight | Tracking |
 |---|---|---|---|---|
-| Display (login/empty hero) | Newsreader | 40px / 1.15 | 500 | -0.02em |
-| Page title | Newsreader | 30px / 1.2 | 500 | -0.01em |
-| Section title | Newsreader | 20px / 1.3 | 500 | normal |
-| Card title | Newsreader | 17px / 1.35 | 500 | normal |
-| Body | Inter | 14px / 1.6 | 400 | normal |
-| Body large (deskripsi halaman) | Inter | 15px / 1.65 | 400 | normal |
-| Label form | Inter | 13px / 1.4 | 500 | normal |
-| Caption / meta | Inter | 12px / 1.4 | 400 | 0.02em |
-| Overline (label section, NAV GROUP) | Inter | 11px / 1.2 | 600 | 0.12em, uppercase |
-| Angka statistik | Newsreader | 34px / 1 | 500 | -0.01em |
+| Display / hero statement | Newsreader | `clamp(2.4rem, 1.4rem + 3.6vw, 4.25rem)` / 1.03 | 400 | −0.03em |
+| Page title | Newsreader | `clamp(1.6rem, 1.2rem + 1.2vw, 2.25rem)` / 1.14 | 400 | −0.02em |
+| Section title | Newsreader | `clamp(1.25rem, 1.05rem + 0.7vw, 1.75rem)` / 1.15 | 400 | −0.015em |
+| Card / entry title | Newsreader | 17px / 1.3 | 400 | −0.01em |
+| Reading body | Newsreader | `clamp(1.0625rem, 1rem + 0.35vw, 1.1875rem)` / 1.75 | 400 | 0 |
+| Body / standfirst | Inter | 14–15px / 1.65 | 400 | 0 |
+| Label (form) | Inter | 12.5px / 1.4 | 500 | 0 |
+| Meta / caption | Inter | 11.5–12.5px / 1.45 | 400 | 0.01em |
+| Overline / nav group | Inter | 10.5px / 1 | 600 | 0.12em, uppercase |
+| Boxed label | Inter | 10.5px / 1 | 600 | 0.09em, uppercase |
+| Folio number | Newsreader | `clamp(1.5rem, 1.2rem + 1vw, 2.125rem)` / 1 | 400 | −0.02em |
+| Archive ID | JetBrains Mono | 11px / 1.4 | 400 | 0.08em |
 
-Aturan:
-- Semua judul memakai `font-serif` (Newsreader). UI, form, body memakai `font-sans`.
-- Italic Newsreader hanya untuk kutipan/epigraph (tagline di halaman auth).
-- Maksimal 2 tingkat abu-abu teks per layar; meta kecil boleh tingkat ketiga.
-- Panjang baris baca: `max-w-[68ch]` untuk deskripsi halaman.
+### 3.2 Rules
+
+- Every heading is `font-serif`. Every control, label, and meta line is
+  `font-sans`. Mono is reserved for numbers that behave like catalogue data.
+- **Weight 400 only** for Newsreader. The v2.0 build used 500/600 for headings;
+  a true text serif at 400 with tight tracking reads more like print and less
+  like a UI. Never synthesise bold.
+- Italic Newsreader is for epigraphs, standfirsts under a title, and
+  marginalia — never for a whole paragraph of interface text.
+- Two grey levels per screen (`ink` + `ink-muted`), plus `ink-faint` for meta.
+  A fourth grey means the hierarchy is unclear.
+- Measure: body copy `max-w-[64ch]`, standfirsts `max-w-[56ch]`, reading column
+  34em, descriptions `max-w-[68ch]`.
 
 ---
 
-## 4. Spacing, Radius, Shadow, Layout
+## 4. Material & Texture
 
-### Spacing scale (mengikuti Tailwind default, gunakan kelipatan ini saja)
-4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 80, 96.
+Three materials, used sparingly.
 
-Aturan umum:
-- Padding konten halaman: 32px (desktop), 16px (mobile).
-- Jarak antar section: 48–64px.
-- Jarak antar kartu dalam grid: 16–20px.
-- Padding dalam kartu: 20px (standar), 24px (kartu fitur besar).
-- Form: jarak antar field 20px; label→input 6px; input→error 4px.
+**Paper grain.** One fixed, full-viewport layer, `pointer-events: none`,
+`mix-blend-mode: screen`, opacity ≈ 0.05, built from a 220px `feTurbulence`
+tile. It sits above surfaces and below dialogs. It should be *felt*, not seen:
+if a screenshot reads as "textured", it is too strong. Disabled under
+`prefers-reduced-transparency` and in print.
 
-### Container
-- Konten utama: `max-w-[1120px]` untuk dashboard/list; `max-w-[720px]` untuk form dan editor (garis baca nyaman).
-- Center, tidak perlu gutters tambahan di dalam main.
+**Ink wash.** A single soft radial vignette behind hero compositions
+(`radial-gradient` at 55% 0%, wine at 8% → transparent 60%). One per page,
+never behind body text, never on a card.
 
-### Radius & shadow
+**Brass hairline.** 1px rules in `border` colour, with `brass` used for a 5px
+rotated square tick at the centre of a section break (`rule-ornament`), or for
+the diamond nodes on a timeline. Nothing else is brass.
 
-| Elemen | Radius | Shadow |
+No background images. No layered photographic textures. No noise inside
+scrollable text regions.
+
+---
+
+## 5. Layout
+
+### 5.1 Three shells
+
+| Shell | Used by | Shape |
 |---|---|---|
-| Card, dialog | 10px | `0 1px 2px rgba(0,0,0,0.3)` — nyaris tak terlihat |
-| Button, input, dropdown, badge | 6px | none |
-| Sidebar item aktif | 6px | none |
-| Cover image card | 8px atas | none |
-| Skeleton | 6px | none |
+| **Public** | Home, Discover, Stories, Story detail, Creators, Creator profile, Universe overview | 1280px measure, hairline top bar, no sidebar, editorial full-bleed sections |
+| **Workspace** | Dashboard, Library, Creations, Writing Studio, Worldbuilding, Encyclopedia, Timeline, RPG Studio, Profile, Settings | 248px sidebar (64px rail at tablet), 60px contextual top bar, 1120px measure |
+| **Immersive** | Story reader | No chrome but a 56px floating bar, 760px column, reader settings |
 
-Prinsip: shadow hanya untuk elemen yang melayang (dialog, dropdown). Kartu statis cukup border + tone difference.
+Auth uses a fourth, minimal split-screen shell.
 
----
+### 5.2 Vertical rhythm
 
-## 5. Application Shell
+Sections are separated by **space and a hairline**, never by a card. Standard
+section padding is 40–64px; a major editorial break (Home, Discover) can use
+96px. Page headers carry `pt-32 pb-24` with a bottom rule.
 
-```
-┌──────────┬──────────────────────────────────────────────┐
-│          │ Navbar (56px, sticky)                        │
-│ Sidebar  ├──────────────────────────────────────────────┤
-│ 264px    │ Breadcrumbs (opsional, 20px di bawah navbar) │
-│ sticky   │ Main content (max-w 1120px, py-32px)         │
-│ full-h   │                                              │
-│          │ Footer tipis 1-baris (border-top)            │
-└──────────┴──────────────────────────────────────────────┘
-```
+### 5.3 Asymmetry
 
-### Sidebar (264px, `bg-surface`, border-right `--color-border`, sticky, full height)
+Where a page has a primary column and a secondary rail, the ratio is
+`1fr / 260–320px` with a 48–64px gap, and the rail starts *below* the first
+paragraph, not at the top of the page. Cover plates may overhang their grid
+cell by 8–16px. Captions may hang to the left of the thing they describe.
+Symmetry is the default only for a centred editorial statement.
 
-Bagian dari atas ke bawah:
-1. **Wordmark (72px):** ikon BookMarked gold + "Lorekeeper" Newsreader 20px ivory. Border-bottom.
-2. **Universe switcher (48px, hanya saat universe terpilih):** dropdown — cover thumbnail 24px bulat + nama universe + ChevronDown. Ini satu-satunya cara navigasi antar universe; state di-angkat ke context nanti.
-3. **NAV GROUP "WORKSPACE":** Dashboard (LayoutDashboard), My Universes (Library), Discover (Compass).
-4. **NAV GROUP "WORLD BUILDING"** (muncul hanya saat universe aktif; jika tidak ada, group disembunyikan — tidak di-disable): Encyclopedia (BookOpen), Timeline (Hourglass). Link ke `/universes/:id/lore` dan `/universes/:id/timeline`.
-5. **NAV GROUP "ACCOUNT" (menempel di bawah):** Settings (Settings), Profile (CircleUser), Logout (LogOut, warna destructive saat hover).
-6. **Primary CTA (paling bawah):** "New Universe" — tombol gold full-width, di atas footer sidebar.
+### 5.4 Radius, borders, shadow
 
-Spesifikasi item nav:
-- Tinggi 36px, padding-x 12px, gap ikon-teks 10px, ikon 16px `text-faint`.
-- Default: teks `--color-muted-foreground`.
-- Hover: `bg-elevated`, teks ivory.
-- **Aktif:** `bg-primary-muted` + teks ivory + ikon gold + **indikator bar 2px gold di sisi kiri** (absolute, inset-y 8px). Ini identitas visual utama sidebar.
-- Label group: overline 11px `text-faint`, padding 12px, margin-top 24px antar group.
-
-### Navbar (56px, sticky, `bg-background/95 + backdrop-blur[2px]`, border-bottom)
-
-- Kiri: breadcrumb inline (Contoh: `My Universes / Aethermoor / Encyclopedia`, terakhir berwarna ivory, sisanya muted, separator `/` 12px faint). Halaman tanpa universe: breadcrumb disembunyikan, ganti dengan tagline "The Archive of Imagined Worlds" italic serif 14px muted.
-- Kanan: tombol ikon Search (buka dialog pencarian global — bisa berupa stub), avatar user 28px bulat + nama 13px.
-- Mobile: kiri = wordmark kecil, kanan = avatar + tombol hamburger (membuka drawer sidebar).
-
-### PageHeader (komponen, dipakai semua halaman dalam)
-
-- `pt-32px pb-24px`, border-bottom 1px, margin-bottom 32px.
-- Baris 1: overline kategori halaman (opsional, misal "WORLDBUILDING / ENCYCLOPEDIA").
-- Baris 2: H1 Newsreader 30px ivory + actions di kanan (flex wrap).
-- Baris 3: deskripsi 15px muted, `max-w-[68ch]`.
-
-### Konten & footer
-- Main `px-32px py-32px`; footer: 1 baris 12px faint, border-top, "Lorekeeper — The Archive of Imagined Worlds".
+Radius 2px (inputs, buttons, plates) to 4px (sheets, dialogs). Never more.
+Borders are always 1px. Shadows exist only for things that float — dialogs,
+dropdowns, the pulled cover — and are deep and soft, never a glow.
 
 ---
 
-## 6. Spesifikasi Halaman (top → bottom)
+## 6. Components
 
-### 6.1 Login — route `/login`, layout `AuthLayout` (tanpa sidebar)
+All primitives live in `src/components/ui`; composed archive components in
+`src/components/shared`.
 
-Tema: halaman pembuka arsip. Background `--color-background`; di sisi kiri (desktop ≥1024px) panel editorial 50%, kanan form.
+### 6.1 Button
 
-1. **Panel kiri (editorial):** overline "THE ARCHIVE OF IMAGINED WORLDS", H1 serif display 40px: "Setiap dunia layak diarsipkan.", paragraf pendek muted, lalu epigraph italic serif 16px faint dengan garis vertikal gold 2px di kiri. Panel ini dibuang di mobile.
-2. **Panel kanan:** kartu `bg-card` radius 10px border, max-w 400px, padding 32px.
-   - Judul serif 20px "Masuk".
-   - Field Email + Password (spesifikasi Input di §7). Error inline merah 12px di bawah field.
-   - Tombol primary gold full-width 40px.
-   - Divider tipis, lalu teks 13px muted: "Belum punya akun? Daftar" (link gold, underline on hover).
-3. **Footer mini:** centered 12px faint "Lorekeeper © 2026".
+Heights 32 / 40 / 48 (44 on mobile for touch). Radius 3px. Inter 500.
 
-### 6.2 Register — `/register`, `AuthLayout` sama
-
-1. Panel kiri sama dengan copy berbeda: "Mulai arsip dunia pertamamu."
-2. Kartu form: Nama, Email, Password, **Konfirmasi Password** (tambahkan di schema Zod dengan `refine` perbandingan). Syarat password ditampilkan sebagai helper 12px faint di bawah field ("Minimal 8 karakter"), berubah jadi success saat valid.
-3. Tombol daftar + link balik ke login.
-
-### 6.3 Dashboard — `/`
-
-1. **PageHeader personalized:** H1 "Selamat datang kembali, {name}.", deskripsi 1 kalimat, actions: tombol primary "New Universe".
-2. **Statistik (1 baris, 3 kolom, dipisah border vertikal bukan kartu):** Universes · Entri Lore · Peristiwa Timeline. Angka serif 34px + overline label + delta kecil 12px sage ("+2 minggu ini"). Bukan kartu — hanya angka dengan divider, sesuai prinsip editorial.
-3. **Section "Universes terakhir dibuka" (H2 serif 20px + link "Lihat semua"):** horizontal row 3 kartu universe (spesifikasi §6.4) dengan meta "Dibuka 2 hari lalu".
-4. **Section "Aktivitas terbaru":** list 5 item, tiap item = ikon kategori 16px dalam kotak 28px `bg-elevated` radius 6px + teks 14px ("Kamu memperbarui **Ordo Penjaga Angin**") + timestamp 12px faint. Separator border antar item.
-5. **Quick actions:** baris 3 kartu kecil (border-dashed): "Tulis entri lore", "Tambah peristiwa", "Jelajahi Discover" — hover → border gold + ikon gold.
-
-### 6.4 My Universes — `/universes`
-
-1. **PageHeader** + action "New Universe" (gold).
-2. **Toolbar (h-40px, sticky di bawah navbar saat scroll):** Input pencarian dengan ikon Search (maks-w 320px) + Select filter Genre (4 genre teratas) + Select "Urutkan" (Terbaru / A–Z / Terakhir diubah). Kanan: view toggle ikon Grid/List (2 ikon button, aktif = `bg-elevated`).
-3. **Grid kartu universe:** 3 kolom desktop / 2 tablet / 1 mobile, gap 20px.
-   - Kartu (radius 10px, `bg-card`, border): **cover 16:9** (rounded 8px atas; kalau tidak ada gambar: `bg-surface` dengan inisial serif 40px gold center), body 20px: judul serif 17px + genre badge sage + deskripsi 2 baris clamp muted 13px + meta 12px faint (jumlah entri · diubah terakhir).
-   - Hover: `translateY(-2px)`, border → `border-strong`, shadow lembut. Klik → overview.
-4. **Empty state** (jika 0 universe): komponen EmptyState dengan ilustrasi ikon BookOpen, CTA "Buat universe pertama".
-
-### 6.5 Create Universe — `/universes/create`
-
-1. **PageHeader** "Universe Baru" + deskripsi.
-2. **Form satu kolom `max-w-[720px]` dalam kartu padding 24px:**
-   - Nama (Input) — helper "Nama dunia yang akan tampil di arsip."
-   - Genre (Select) + Visibility (Select: Privat / Publik) — berdampingan 2 kolom di ≥sm.
-   - Deskripsi (Textarea 5 baris, counter karakter 12px di kanan bawah: "0/500").
-   - **Cover image:** dropzone dashed border radius 8px tinggi 140px — ikon ImagePlus faint + teks 13px. Preview saat dipilih (object-cover). Ini visual-only dulu (belum upload backend).
-   - Footer form: kanan-kiri — "Cancel" (ghost) dan "Buat Universe" (gold). Submit disabled saat `isSubmitting`.
-3. Validasi inline Zod sesuai existing schema; error border destructive + pesan 12px.
-
-### 6.6 Universe Overview — `/universes/:universeId`
-
-1. **Cover strip (bukan hero full-bleed):** kontainer max-w 1120px, gambar 240px tinggi radius 10px, overlay gradien `linear-gradient(180deg, transparent 40%, rgba(20,22,19,0.85))`; di atas overlay kiri-bawah: H1 serif 30px ivory + genre badge sage + deskripsi 2 baris. Kalau tanpa cover: blok `bg-surface` dengan pola inisial.
-2. **Statistik inline (1 baris, 4 item dipisah border):** Entri · Karakter · Lokasi · Peristiwa — angka serif 24px + label overline.
-3. **Quick navigation (3 kartu horizontal):** Encyclopedia / Timeline / Editor — kartu `bg-card` dengan ikon, judul serif 17px, deskripsi 13px, arrow kanan faint; hover border gold.
-4. **"Baru diperbarui":** list 5 entri lore (ikon kategori + judul + kategori badge + waktu), tiap baris border-bottom; klik → detail encyclopedia.
-5. Empty state per section bila kosong (mis. timeline 0 peristiwa).
-
-### 6.7 Lore Encyclopedia — `/universes/:universeId/lore`
-
-1. **PageHeader** "Encyclopedia" + deskripsi universe + actions: "Entri Baru" (gold) + view toggle Grid/List.
-2. **Toolbar:** Input search (placeholder "Cari entri...") + Select Kategori (Character/Location/Faction/Artifact/Mythology) + Select Sort.
-3. **Grid entri (3 kolom):** kartu lebih tipis dari universe card — tanpa cover, melainkan:
-   - Header: ikon kategori dalam kotak 32px `bg-secondary-muted` (ikon sage) + kategori overline 11px.
-   - Judul serif 17px ivory.
-   - Ringkasan 13px muted, 2 baris clamp.
-   - Footer meta: status canon (badge, lihat §7) + tanggal update 12px faint.
-   - Klik → **detail via Dialog** (bukan halaman baru, sesuai implementasi existing): dialog max-w 560px, header = kategori + judul serif 20px, body = ringkasan + tags, footer = tombol "Buka di Editor".
-4. **List view (toggle):** baris tabel-santai — ikon + judul (col 30%) + kategori (20%) + canon (15%) + diubah (15%) + arrow. Border antar baris.
-5. **Empty:** "Belum ada entri" + CTA "Tulis entri pertama". **No-results** (filter aktif): varian EmptyState tanpa CTA + tombol "Reset filter".
-
-### 6.8 Lore Editor — `/universes/:universeId/lore/:loreId/edit` (dan entri baru)
-
-1. **PageHeader** dengan breadcrumb kembali ke Encyclopedia di atas judul.
-2. **Form `max-w-[720px]`:**
-   - Judul (Input besar 16px).
-   - Baris 2 kolom: Kategori (Select) + **Canon status** (Select: Canon / Draft / Legend — Legend = non-kanonik, badge warning).
-   - Deskripsi singkat (Input).
-   - **Konten (rich text area):** `min-h-[320px]` Textarea putih-nada dengan border; toolbar formatting minimal (Bold / Italic / H2 / List — ikon only, 32px) di atas area, border-bottom. Implementasi awal: textarea + toolbar visual; rich rendering menyusul tanpa dependency editor.
-   - **Tags:** input chip — ketik → chip `bg-elevated` radius 6px dengan X kecil; maks 8 chip, ditampilkan di bawah input.
-3. **Footer sticky (border-top, `bg-background`):** kiri status "Draft tersimpan otomatis · 12:04" 12px faint; kanan Cancel (ghost) + Save (gold).
-
-### 6.9 Timeline — `/universes/:universeId/timeline`
-
-1. **PageHeader** "Timeline" + action "Peristiwa Baru" (buka Dialog form: tanggal/era, judul, deskripsi).
-2. **Konten: timeline vertikal editorial** (bukan kolom tanggal di kiri ala admin):
-   - Garis vertikal 1px `--color-border` di kiri (offset 12px), node berupa **diamond 8px gold** (rotate 45°) untuk canon, sage untuk draft.
-   - Tiap event: overline tanggal ("TAHUN 214"), judul serif 20px, deskripsi muted max-w 60ch. Jarak antar event 48px.
-   - Era besar (mis. "Zaman Lentera") disisip sebagai **section divider**: garis horizontal + teks overline sage — memberi ritme editorial.
-3. **Empty state:** "Sejarah dunia ini belum tertulis." + CTA.
-
-### 6.10 Discover — `/discover`
-
-Satu-satunya halaman dengan nuansa lebih "galeri" karena kontennya milik orang lain.
-
-1. **Header editorial tanpa PageHeader biasa:** epigraph italic serif terpusat "Dunia yang dibagikan para penjaga lore." + H1 "Discover" + deskripsi. Tanpa actions.
-2. **Featured (1 kartu lebar horizontal):** cover kiri 40% + kanan: overline "FEATURED", judul serif 24px, deskripsi, stat mini, tombol "Jelajahi dunia". Radius 10px, border, `bg-card`.
-3. **Toolbar:** search + Select genre + Select sort (Populer / Terbaru).
-4. **Grid kartu publik (3 kolom):** seperti kartu My Universes + baris bawah tambahan: avatar owner 20px + "oleh {owner}" 12px.
-5. **Empty / no-result** sama pola dengan Encyclopedia.
-
----
-
-## 7. Spesifikasi Komponen
-
-Semua komponen ada di `src/components/ui` (shadcn-style) & `src/components/shared`. Angka berlaku desktop; perbedaan mobile di §8.
-
-### Button (existing, sesuaikan token)
-- Height: sm 32px / default 40px / lg 44px. Padding-x 16px, gap 8px, ikon 16px. Radius 6px. Font Inter 14px/500.
-- **Primary (gold):** `bg-primary text-background`. Hover `bg-primary-hover`. Active: scale 0.98. Disabled: opacity 0.4, pointer-events tetap tapi `disabled:` styling.
-- **Secondary:** `bg-elevated text-foreground`, hover `bg-surface`+border-strong.
-- **Outline:** border `--color-input`, teks ivory, hover `bg-elevated`.
-- **Ghost:** transparan, hover `bg-elevated`.
-- **Destructive:** `bg-destructive/10 text-destructive border destructive/30`, hover solid.
-- **Link (gold):** underline-offset 4px, hover underline.
-- Focus ring: `ring-2 ring-primary ring-offset-2 ring-offset-background`.
-
-### Input / Textarea / Select
-- Height 40px, radius 6px, border 1px `--color-input`, `bg-card`, padding-x 12px, teks 14px ivory.
-- Placeholder `--color-faint`.
-- Focus: border `--color-primary` + `ring-1 ring-primary/40` (tanpa glow besar).
-- Error: border destructive + pesan 12px destructive + `role="alert"`.
-- Disabled: `bg-surface`, teks faint, cursor not-allowed.
-- **Select:** sama, + ChevronDown 16px kanan (custom, karena Radix belum terpasang — pakai `<select>` native dengan appearance-none dulu, supaya tanpa dependency baru).
-- **Textarea:** min-height sesuai konteks, resize-y, padding 12px.
-
-### Card
-- `bg-card` border radius 10px padding 20px. Varian: `interactive` (hover translateY -2px + border-strong + shadow lembut, cursor pointer) dan statis.
-- Header layout: overline kategori (opsional) → judul serif → deskripsi muted.
-
-### Dialog/Modal (existing Radix dialog)
-- Overlay `bg-black/70` (lebih pekat dari existing 60%, untuk atmosfer).
-- Konten: `bg-card` radius 10px border `--color-border-strong`, max-w 560px (form 480px), padding 24px, shadow `0 8px 32px rgba(0,0,0,0.45)`.
-- Title serif 20px; Description 13px muted; footer kanan dengan gap 12px.
-- Motion: overlay fade 150ms; konten `opacity 0→1, translateY(8px→0), scale(0.98→1)` 200ms ease-out; exit kebalikan 150ms.
-
-### Badge
-- Height 22px, padding-x 8px, radius 6px, font 11px/600 uppercase tracking 0.04em.
-- Varian: `sage` (bg sage-muted, teks sage) untuk genre/kategori; `gold` (bg primary-muted, teks gold) untuk featured/aktif; `outline` (border saja, teks muted) untuk meta; `success`/`warning` untuk canon status (Canon = success, Draft = warning, Legend = outline).
-
-### Tabs (untuk view toggle & section overview)
-- Trigger: height 32px, padding-x 12px, teks 13px/500 muted; aktif: `bg-elevated` teks ivory + underline 2px gold (indicator animasi 150ms). Container: gap 4px, border-bottom 1px.
-
-### Dropdown (sidebar universe switcher & user menu)
-- Trigger & panel: panel `bg-card` border radius 8px, min-w 200px, padding 4px, shadow mengambang.
-- Item: height 32px, padding-x 8px, teks 13px; hover `bg-elevated`; destructive item teks `--color-destructive`.
-- Motion: fade+scale 150ms origin-top.
-- Implementasi tanpa dependency: button + conditional render + klik-luar (bisa tulis hook kecil `useClickOutside`).
-
-### Sidebar / Navbar / PageHeader
-- Lengkap di §5. PageHeader props: `overline`, `title`, `description`, `actions`.
-
-### LoadingState — ubah dari spinner ke **skeleton**
-- Komponen `Skeleton`: blok `bg-elevated` radius 6px + animasi pulse (opacity 0.5↔1, 1.5s).
-- Preset: `SkeletonCard` (cover + 2 baris), `SkeletonList` (4 baris h-12), `SkeletonStats` (3 angka). Spinner 16px hanya untuk aksi tombol (state isSubmitting).
-
-### ErrorState
-- Kartu border destructive/30 `bg-destructive-muted`, ikon TriangleAlert destructive, pesan 14px, tombol "Coba lagi" outline. Center, padding-y 48px.
-
-### EmptyState
-- Border-dashed `--color-border-strong`, radius 10px, padding-y 64px, ikon 28px faint, judul serif 18px ivory, deskripsi 14px muted max-w 40ch, CTA opsional (primary).
-
----
-
-## 8. Interaksi & Motion
-
-| Interaksi | Spesifikasi |
+| Variant | Appearance |
 |---|---|
-| Sidebar item aktif | Bar 2px gold fade-in 150ms + bg transition |
-| Card hover | `translateY(-2px)` + border-color + shadow, 150ms ease-out; **hanya untuk kartu interactive** |
-| Button press | `scale(0.98)` 100ms |
-| Dialog | Overlay fade 150ms; panel fade+rise 200ms ease-out; exit 150ms |
-| Dropdown | fade+scale 150ms, transform-origin top |
-| Tabs indicator | underline translate 150ms |
-| Skeleton | pulse opacity 1.5s infinite |
-| Page transition | **Tidak ada transisi route penuh** — cukup konten main dengan `animation: fade-in 200ms` sekali saat mount (key = pathname) |
-| Focus-visible | ring gold 2px offset 2px, semua elemen interaktif |
+| `primary` | Crimson fill, `onaccent` text. Hover `crimson-deep`. |
+| `outline` | 1px `ink` border, transparent, `ink` text. Hover: ink fill, paper text. |
+| `quiet` | 1px `border-strong`, `surface` fill. Hover border `ink`. |
+| `ghost` | Transparent, `ink-muted`. Hover `paper-muted` + `ink`. |
+| `accent` | 1px arcane border, arcane-bright text. Hover arcane fill + onaccent. |
+| `destructive` | 1px alert border, alert text. Hover alert fill + paper text. |
 
-Global rule:
-- Durasi: 100–200ms. Easing: `ease-out` masuk, `ease-in` keluar. Tidak ada spring/bounce.
-- Properti yang dianimasikan: `opacity`, `transform`, `color`, `background-color`, `border-color` saja (murah, tanpa layout thrash).
-- **`prefers-reduced-motion: reduce`** → semua transition/animation duration jadi 0.01ms (definisikan sekali di CSS global):
-  ```css
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms; transition-duration: 0.01ms; }
-  }
-  ```
+Press: `scale(0.985)` over 120ms. Focus: 2px arcane ring, 2px offset.
+
+### 6.2 Boxed label (`.label-box`)
+
+The signature archival motif, inherited from the v2.0 print system: 21px tall,
+1px `currentColor` border, 8px side padding, Inter 600 / 10.5px / 0.09em
+uppercase. Used for genre stamps, canon status, visibility, folio tags, and
+breadcrumb terminals. It replaces pills everywhere.
+
+### 6.3 Field
+
+Label 12.5px `ink` → 6px → control → 4px → hint/error. Control: `surface` fill,
+1px `control` border, 40px tall, 3px radius. Focus: arcane border + 1px arcane
+ring. Error: alert border + alert 12px message with `role="alert"`, wired with
+`aria-describedby`. Composite fields (toolbar + textarea) build their own label
+instead of using `Field`, which clones a single child.
+
+### 6.4 Card
+
+A hairline-framed `surface` sheet, 4px radius, no shadow, 20–24px padding.
+Variants: `static`, `frame` (border only), `plain`, `sunken`, `ink`, `dashed`.
+A card is used when an object genuinely needs a boundary (a form, a dialog, a
+cover plate). Lists of stories, entries, and worlds are **ruled rows**, not
+cards.
+
+### 6.5 Story cover
+
+There is no cover art in this build, so the cover is *composed* as a dark
+fantasy jacket: a tone plate (wine / arcane / obsidian / brass-quiet / moss),
+a survey-rule grid, the title in Newsreader, the author in micro-caps, a genre
+stamp, and a catalogue number. Five tones, each with its own text colour, all
+AA-checked. Covers lift 4px on hover; nothing else moves.
+
+### 6.6 Universe plate
+
+16:9 cartographic plate: tone field, two vertical survey rules, one horizontal,
+oversized initials in Newsreader at 20% opacity, genre stamp top-left, private
+lock top-right. The plate is the visual identity of a world, so it is drawn,
+not boxed.
+
+### 6.7 Dialog
+
+Radix dialog. Veil `ink/55` (dark, not black). Sheet: `surface`, 1px
+`border-strong`, 4px radius, 24px padding, deep shadow. Enters with a clip
+reveal from the top edge plus 4px rise over 220ms; exits over 160ms. Title in
+Newsreader 22px; description 13.5px muted.
+
+### 6.8 Tabs & segmented control
+
+Underline tabs: 13px/500, active `ink` with a 2px ink rule that scales from the
+left over 150ms. Segmented control: joined boxes, 1px `border-strong`, active
+segment `ink` fill with `paper` text (a paper chip — the one place a light fill
+is correct on the dark ground). On mobile the control goes full-width with
+equal segments.
+
+### 6.9 Dropdown
+
+Trigger render-prop + conditional panel. Panel `surface`, 1px `border-strong`,
+3px radius, min 210px, deep shadow, clip-reveal over 180ms. Rows 32px (44 on
+mobile), `ink-muted` → `ink` on hover. Destructive rows in alert. Closes on
+outside pointer-down, Escape, and selection. Items may be links (`to`) so
+middle-click and keyboard work.
+
+### 6.10 Skeleton, empty, error, loading
+
+- **Skeleton**: `paper-muted` blocks, 2px radius, 1.6s shimmer at 0.55–1.0
+  opacity. Never a spinner for content; the only spinner is a 16px one inside a
+  submitting button.
+- **EmptyState**: a quiet printed notice between two rules, optional icon and
+  CTA. Not a dashed box.
+- **ErrorState**: a 2px alert rule in the left margin, alert-tinted wash, serif
+  title, retry action.
+- **LoadingState**: variants `covers`, `rows`, `stats`, `prose`.
+
+---
+
+## 7. Page Direction
+
+### 7.1 Public Home — *preserved structure*
+
+The Home page composition is **kept**: editorial masthead → featured cover
+shelf → recently published → genre index → creators → universes → closing
+statement. Only the skin changes.
+
+- Masthead: overline in brass, display statement at 56–68px, standfirst, a meta
+  row of counts, two actions.
+- Cover shelf: the existing interaction (drag, arrows, keyboard, caption
+  mask-slide) is unchanged. Visuals only: covers cast deeper shadows, the shelf
+  sits on a faint ink wash, the caption rule is brass.
+- Genre index: a four-column ruled index with mono counts.
+- Closing statement: wine panel, 3-part grid, no borders.
+
+### 7.2 Discover
+
+Editorial header centred, then the featured band (cover plate 220px beside a
+kicker, title, standfirst, meta, two actions), then toolbar, then the grid.
+The featured band is the page's single lit place — it gets the ink wash.
+
+### 7.3 Stories / Creators
+
+Index pages: header, toolbar, then content. Stories use a 5-up cover grid at
+desktop; creators use a two-column typographic list (initials plate, name,
+handle, bio, counts) with hairline dividers, not cards.
+
+### 7.4 Story detail
+
+Asymmetric masthead: 300px cover plate left, editorial column right (stamps,
+title at display size, synopsis, byline, actions, a 4-item folio row). Then a
+two-column body: chapter list (`1fr`) and a marginalia rail (280px) for author,
+universe, tags. Chapters are ruled rows with mono folio numbers.
+
+### 7.5 Story reader
+
+Immersive. 760px column, Newsreader at 19px/1.75, drop cap in brass on the first
+paragraph, a 1px arcane progress rule pinned to the top. Chrome hides on
+scroll-down. Reader settings: theme (Obsidian / Parchment) and type size
+85–130%. This is the one place the light theme exists.
+
+### 7.6 Library
+
+Three ruled sections: continue reading (with a 1px progress rule under each
+row), bookmarked, following. Each has an overline, a count, and a hairline.
+
+### 7.7 Creations / Writing Studio
+
+Workspace editorial: folio stat row, drafts as ruled rows with status stamps,
+published as compact rows, universes and campaigns as two columns. The primary
+action is always "New Story" in the header.
+
+### 7.8 Story & chapter editors
+
+620–760px column. Metadata form in a `surface` sheet; chapter list in a rail.
+The chapter editor is a distraction-free writing surface: a toolbar strip
+(bold, italic, quote, scene break, live word count) above a serif textarea,
+with a save-state line in the footer. No chrome inside the writing area.
+
+### 7.9 Worldbuilding
+
+Index: ruled rows with plate initials, genre stamp, counts. World detail:
+cover plate strip (240px), folio stats, three quick-nav doors, latest entries,
+timeline highlights, linked stories, campaigns.
+
+### 7.10 Encyclopedia
+
+Header with view toggle (grid / list) and "New Entry". Toolbar + canon tabs
+with counts. Grid view: entries as index cards — category overline, serif
+title, two-line summary, canon stamp, edited date. List view: a ruled table
+with mono dates. Detail opens in a dialog with the full entry and an "Open in
+editor" action.
+
+### 7.11 Lore editor
+
+760px column: title, category + canon, summary with counter, then a long-form
+body with a markdown-lite toolbar, then tag chips. Footer carries save state
+and the markdown-lite note.
+
+### 7.12 Timeline
+
+Editorial vertical chronology: era names as section dividers (rule + brass
+overline), a 1px rule down the left with 8px diamond nodes — brass for canon,
+hollow for legend, moss for draft. Dates in mono above each title. New events
+via dialog.
+
+### 7.13 RPG Studio
+
+Campaign index rail (260px) beside the selected campaign: stamp row, title,
+premise, italic setting line, quest board, cast, session log. Reads like a
+game master's notebook — ruled lists, mono session numbers, no cards.
+
+### 7.14 Auth
+
+Split screen: left panel is a wine-dark masthead with a rule grid, an overline,
+a display statement, a standfirst, and an epigraph with a brass rule; right
+panel is the form, set as a title page (overline → serif title → standfirst →
+form → hairline → secondary link). No card. Panel hidden below `lg`.
+
+### 7.15 Profile & Settings
+
+Profile: initials plate + name, form in a 520px column, archive counts in a
+marginalia rail. Settings: sectioned ruled rows (reading & motion, archive,
+account) with a destructive "Reset to seed".
+
+---
+
+## 8. Motion
+
+**Direction: balanced.** Motion explains a state change; it never performs.
+
+| Interaction | Duration | Easing |
+|---|---|---|
+| Hover / focus colour | 120–160ms | `--ease-editorial` |
+| Button press | 100–140ms | `--ease-editorial` |
+| Dropdown open | 180ms | clip reveal |
+| Dialog in / out | 220 / 160ms | clip + 4px rise |
+| Card / cover lift | 240ms | `--ease-editorial` |
+| Caption mask slide | 620ms | `--ease-editorial` |
+| Page entrance | 340ms | clip reveal on the content column |
+
+Signature motions, inherited and kept:
+
+- **Mask slide.** Text that changes in place (shelf caption, page headers on
+  route change) slides out of an overflow mask rather than fading. No opacity
+  fades for content reveals.
+- **Clip reveal.** Page content and dialogs reveal by `clip-path`, so the
+  page appears to be *set* rather than faded in.
+- **Cover lift.** A story or universe plate rises 4px and deepens its shadow on
+  hover. One transform, no loop.
+
+No continuous animation. No parallax. No 3D book system in this version — the
+cover shelf keeps its current interaction; only its styling changes.
+
+Reduced motion: all durations collapse to 0.01ms, the shelf snaps, and the
+grain layer is dropped. The preference is read from the OS and can be forced in
+Settings.
 
 ---
 
 ## 9. Responsive
 
-| Breakpoint | Layout |
+| Breakpoint | Shell |
 |---|---|
-| ≥1280px | Sidebar 264px tetap, konten max-w 1120px, grid 3 kolom |
-| 1024–1279px | Sama, grid universe 2 kolom |
-| 768–1023px (tablet) | **Sidebar collapse jadi rail 64px** (ikon only, tooltip via title attr; group label disembunyikan) — alternatif lebih murah daripada drawer. Navbar penuh. Grid 2 kolom. |
-| <768px (mobile) | Sidebar jadi **drawer**: tombol hamburger di navbar → panel overlay dari kiri (264px, `bg-surface`), backdrop `bg-black/60`, tutup saat navigate/backdrop/X. Auth: panel editorial kiri dibuang, form full-width padding 16px. Grid 1 kolom. Statistik dashboard jadi scroll-snap horizontal. Timeline: garis & node tetap kiri, konten full. Toolbar filter: search full-width, Select berjejer scrollable. |
+| ≥ 1280 | Full sidebar 248px, 1120–1280px measure, 3–5 column grids |
+| 1024–1279 | Full sidebar, 2–4 columns |
+| 768–1023 | Sidebar collapses to a 64px icon rail (labels hidden, `title` + `aria-label` retained); public grids 2–3 columns |
+| < 768 | Sidebar becomes a drawer (248px, ink veil, closes on navigate / Escape / veil); grids 1–2 columns; stat rows become horizontal scroll rails; toolbars stack |
 
-Wajib: tidak ada overflow horizontal di semua breakpoint (uji cover strip & timeline date overline). Touch target min 44px di mobile untuk item nav & tombol.
+Requirements: no horizontal overflow at any width; 44px minimum touch target on
+mobile for nav items, buttons, and form controls; reading column never exceeds
+its measure; timelines keep their rule and nodes on the left; cover plates keep
+a 2:3 or 16:9 ratio at every size.
 
 ---
 
-## 10. Urutan Implementasi (disarankan)
+## 10. Accessibility
 
-1. **Fondasi token:** ganti `@theme` di `src/index.css` (palet gelap §2) + font weight + reduced-motion rule. Semua komponen existing langsung ikut berubah warna karena sudah pakai token.
-2. **Primitives:** Badge, Skeleton (LoadingState refactor), Select (native), Update Button/Card/Dialog ke spesifikasi §7.
-3. **Shell:** Sidebar baru (group WORKSPACE/WORLD BUILDING/ACCOUNT, indikator gold, universe switcher stub), Navbar dengan breadcrumb, PageHeader dengan overline.
-4. **Halaman auth:** Login & Register (panel editorial + form; tambah konfirmasi password di schema).
-5. **Dashboard** (statistik editorial + recent + quick actions).
-6. **My Universes** (toolbar + kartu cover + empty) → **Create Universe** (form lengkap + dropzone visual).
-7. **Universe Overview** (cover strip + quick nav) → **Encyclopedia** (toolbar + grid/list + dialog detail) → **Lore Editor** (toolbar rich text visual + tags + sticky footer).
-8. **Timeline** (node diamond + era divider) → **Discover** (featured + grid publik).
-9. **Polish:** state kosong semua halaman, skeleton di semua fetch, audit kontras & reduced-motion, uji 3 breakpoint.
-
-Estimasi relatif: langkah 1–3 mengubah ~80% look dengan ~30% effort — kerjakan dulu sebelum sentuh halaman.
+- Semantic landmarks (`header`, `nav`, `main`, `aside`, `footer`) and one `h1`
+  per page; headings never skip levels. A component that renders artwork must
+  not emit a heading.
+- Every interactive element is a real `button` or `a`. Every control has a
+  label; icon-only controls have `aria-label`.
+- Visible focus on everything: 2px arcane outline, 2px offset, as a global
+  default. Components that draw their own ring opt out explicitly.
+- Contrast: body and meta ≥ 4.5:1, large display text ≥ 3:1, non-text UI
+  (borders, focus, controls) ≥ 3:1. Accent fills pair only with `onaccent`.
+- Live regions: shelf caption, filter result counts, save state, form errors.
+- `prefers-reduced-motion` honoured globally; a Settings toggle forces it.
+- A "Skip to content" link precedes the header in every shell.
 
 ---
 
-## Lampiran: mapping token → file
+## 11. Token → File Map
 
-| Token baru | Ubah di |
+| Concern | File |
 |---|---|
-| Palet gelap, `--color-surface/elevated/faint/secondary` | `src/index.css` `@theme` |
-| Ring/focus, radius 10px card | `src/index.css` + class di `components/ui/*` |
-| Skeleton, fade-in keyframe, reduced-motion | `src/index.css` (global) |
-| Sidebar groups & indikator | `components/shared/sidebar.jsx` |
-| Breadcrumb navbar | `components/shared/navbar.jsx` |
-| Overline PageHeader | `components/shared/page-header.jsx` |
-| Universe switcher (baru) | `components/shared/` + state universe di `hooks/` |
+| Palette, type, radius, motion, texture, reduced motion | `src/index.css` |
+| Button, badge, card, input, dialog, tabs, dropdown, field, skeleton | `src/components/ui/*` |
+| Cover, plate, shelf, headers, stat rows, toolbars, states | `src/components/shared/*` |
+| Public / workspace / immersive / auth shells | `src/layouts/*` |
+| Page compositions | `src/pages/*` |
+| Mock data and persistence | `src/services/mock-api.js` |
+
+---
+
+## 12. Quality Checklist
+
+Before a page is considered done:
+
+- One `h1`, one lit place, one crimson action, brass only as a garnish.
+- Type hierarchy readable with colour removed.
+- No card where a rule would do.
+- Every interactive element reachable by keyboard with a visible focus ring.
+- No horizontal overflow at 390 / 900 / 1440.
+- Loading uses skeletons; empty and error states are written, not defaulted.
+- Copy is English, specific, and free of filler.

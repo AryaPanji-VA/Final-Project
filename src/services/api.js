@@ -1,9 +1,9 @@
-// Konfigurasi API terpusat. Nanti tinggal ganti VITE_API_BASE_URL
-// ke backend asli (lihat Runbook WAD Minggu 4: URL API disimpan di satu file).
+// Central API configuration. Point VITE_API_BASE_URL at a real backend and the
+// fetch helper below starts working without touching the services.
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
-// Helper fetch sederhana. Backend belum ada, jadi service di bawah
-// masih memakai data tiruan; helper ini siap dipakai saat backend jadi.
+// Thin fetch wrapper. There is no backend in this build, so the services read
+// from the mock store; this helper is ready for when one exists.
 export async function apiFetch(path, { method = "GET", body, token } = {}) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method,
@@ -15,7 +15,7 @@ export async function apiFetch(path, { method = "GET", body, token } = {}) {
   });
 
   if (!response.ok) {
-    throw new Error(`Permintaan gagal (${response.status}). Coba lagi sebentar.`);
+    throw new Error(`Request failed (${response.status}). Please try again shortly.`);
   }
   return response.json();
 }

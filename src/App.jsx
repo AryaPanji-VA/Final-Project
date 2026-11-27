@@ -1,5 +1,5 @@
-// App.jsx kini hanya menyatukan routing. Semua halaman, layout, dan
-// proteksi didefinisikan di src/routes/app-routes.jsx.
+// App.jsx only composes routing. Every page, layout and guard is declared in
+// src/routes/app-routes.jsx.
 import { AppRoutes } from "./routes/app-routes.jsx";
 
 function App() {
