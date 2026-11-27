@@ -195,16 +195,25 @@ export function BookShelf({ stories, className }) {
 
     function onWheel(event) {
       if (isOpen) return;
-      // Only horizontal intent scrubs the shelf. A vertical scroll belongs to
-      // the page — hijacking it is the thing every bad carousel does.
-      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+
+      // Both axes drive the shelf: a horizontal trackpad swipe stays
+      // pixel-accurate, a vertical mouse wheel moves roughly one book per
+      // notch. The scrub is continuous while scrolling and the idle timer
+      // lets the frame loop glide the nearest book to rest — the same
+      // feel as scroll-driven slide switchers.
+      const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1;
+      const dx = event.deltaX * unit;
+      const dy = event.deltaY * unit;
+      const horizontal = Math.abs(dx) > Math.abs(dy);
+      const delta = horizontal ? dx : dy;
+      if (delta === 0) return;
 
       event.preventDefault();
-      targetRef.current += event.deltaX / step;
+      targetRef.current += delta * (horizontal ? 1 / step : 1 / 120);
       window.clearTimeout(onWheel.timer);
       onWheel.timer = window.setTimeout(() => {
         targetRef.current = Math.round(targetRef.current);
-      }, 160);
+      }, 200);
     }
 
     viewport.addEventListener("pointerdown", onPointerDown);
@@ -257,7 +266,20 @@ export function BookShelf({ stories, className }) {
         if (r >= total / 2) r -= total;
 
         const distance = Math.abs(r);
-        const x = r * step + (d - ws + 1.6 * gap) * (distance < 1 ? (r + Math.sin(Math.PI * r) / Math.PI) / 2 : Math.sign(r) * 0.5);
+
+        // The selected book opens a gap around itself like real books on a
+        // shelf: everything past the first slot rides as one rigid block —
+        // neighbours keep the normal slot spacing between themselves (the
+        // untouched part of the shelf stays untouched), and the whole block
+        // shifts just far enough for the facing cover to fit. The selected
+        // book glides from the centre to its first pushed slot on a
+        // smoothstep, so position and speed both match up with no snap.
+        const face = (d + ws) / 2 + 2 * gap; // room the facing cover needs
+        const pushMax = Math.max(0, face - step);
+        const base = distance < 1
+          ? Math.sign(r) * (step + pushMax) * smoothstep(distance)
+          : Math.sign(r) * (distance * step + pushMax);
+        const x = base;
 
         // Cull just past the shelf edge. Overflow clipping is unreliable inside
         // a preserve-3d subtree, so books must be hidden explicitly or a spine
