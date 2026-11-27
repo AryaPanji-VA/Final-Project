@@ -1,6 +1,32 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap");
 @import "tailwindcss";
 
+/* Menambah Deklarasi Font Baru */
+@font-face {
+  font-family: "Cinzel";
+  src: url("/fonts/cinzel/Cinzel-VariableFont_wght.ttf") format("truetype");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/cormorant-garamond/CormorantGaramond-VariableFont_wght.ttf")
+    format("truetype");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Theme variant. `parchment` is the reader's paper theme (§2.3) — a warm
    vellum ground with black ink, not an inversion of the dark archive. */
 @custom-variant parchment (&:where([data-theme="parchment"], [data-theme="parchment"] *));
@@ -9,6 +35,10 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Newsreader", ui-serif, Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --font-display: "Cinzel", serif;
+  --font-reading: "Cormorant Garamond", serif;
+  --font-ui: "Inter", sans-serif;
 
   /* ================================================================== */
   /* Obsidian — the archive ground (§2.2)                                */
@@ -242,12 +272,24 @@
   z-index: -1;
   pointer-events: none;
   background:
-    radial-gradient(58% 62% at 46% 0%, rgba(112, 45, 59, 0.36) 0%, transparent 68%),
-    radial-gradient(42% 48% at 84% 10%, rgba(38, 59, 89, 0.3) 0%, transparent 70%);
+    radial-gradient(
+      58% 62% at 46% 0%,
+      rgba(112, 45, 59, 0.36) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      42% 48% at 84% 10%,
+      rgba(38, 59, 89, 0.3) 0%,
+      transparent 70%
+    );
 }
 
 [data-theme="parchment"] .ink-wash::before {
-  background: radial-gradient(58% 62% at 46% 0%, rgba(110, 43, 55, 0.1) 0%, transparent 68%);
+  background: radial-gradient(
+    58% 62% at 46% 0%,
+    rgba(110, 43, 55, 0.1) 0%,
+    transparent 68%
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -405,7 +447,9 @@
 /* Reading typography for the chapter body. */
 @utility reading {
   font-family: var(--font-serif);
-  font-size: calc(clamp(1.0625rem, 1rem + 0.35vw, 1.1875rem) * var(--reader-scale, 1));
+  font-size: calc(
+    clamp(1.0625rem, 1rem + 0.35vw, 1.1875rem) * var(--reader-scale, 1)
+  );
   line-height: 1.75;
   color: var(--color-ink);
   hanging-punctuation: first;
