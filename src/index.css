@@ -275,7 +275,11 @@
 .ink-wash::before {
   content: "";
   position: absolute;
-  inset: -18% -8% 0;
+  /* Only the top overhangs: the bloom should rise above the header, and
+     `.ink-wash` clips the sides anyway. A horizontal overhang would make the
+     gradient box wider than the clip, so the radial would still be carrying
+     alpha where the clip lands — a hard vertical seam down the right edge. */
+  inset: -18% 0 0;
   z-index: -1;
   pointer-events: none;
   background:
@@ -289,6 +293,9 @@
       rgba(38, 59, 89, 0.3) 0%,
       transparent 70%
     );
+  /* Belt and braces: taper the last fifth so the bloom is at zero exactly
+     where the clip is, at any viewport width. */
+  mask-image: linear-gradient(to right, #000 0%, #000 80%, transparent 100%);
 }
 
 [data-theme="parchment"] .ink-wash::before {

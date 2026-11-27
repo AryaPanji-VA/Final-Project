@@ -47,7 +47,7 @@ export function HomePage() {
 
   const recent = [...stories]
     .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
-    .slice(0, 5);
+    .slice(0, 10);
 
   const topCreators = [...creators].sort((a, b) => b.followers - a.followers).slice(0, 3);
 

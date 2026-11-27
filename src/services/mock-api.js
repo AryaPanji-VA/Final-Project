@@ -245,6 +245,132 @@ let stories = [
     featured: false,
     tone: "cobalt",
   },
+  {
+    id: "st-9",
+    title: "The Lantern Road",
+    slug: "the-lantern-road",
+    authorId: "c-1",
+    genre: "Literary Fantasy",
+    tags: ["roads", "lamplight", "vows"],
+    synopsis:
+      "A road that only exists between two and four in the morning, and the lamplighter who has walked it every night for thirty years without once reaching the end.",
+    status: "published",
+    publishedAt: "2026-10-21",
+    updatedAt: "2026-11-25",
+    likes: 968,
+    reads: 14260,
+    universeId: "unv-1",
+    featured: false,
+    tone: "forest",
+  },
+  {
+    id: "st-10",
+    title: "Hollow Tide",
+    slug: "hollow-tide",
+    authorId: "c-2",
+    genre: "Historical",
+    tags: ["harbours", "commissions", "debt"],
+    synopsis:
+      "In 1841 a harbour simply drained. The commission that investigated it produced eleven volumes and one conclusion: the sea had been borrowed, and the repayment was overdue.",
+    status: "published",
+    publishedAt: "2026-09-30",
+    updatedAt: "2026-11-20",
+    likes: 534,
+    reads: 9040,
+    universeId: "unv-4",
+    featured: false,
+    tone: "moss",
+  },
+  {
+    id: "st-11",
+    title: "The Cartographer's Widow",
+    slug: "the-cartographers-widow",
+    authorId: "c-2",
+    genre: "Historical",
+    tags: ["maps", "inheritance", "coastlines"],
+    synopsis:
+      "She inherited four hundred unfinished maps and a single instruction: never draw the coastline past the point where the ink runs out.",
+    status: "published",
+    publishedAt: "2026-11-08",
+    updatedAt: "2026-11-24",
+    likes: 731,
+    reads: 11890,
+    universeId: "unv-4",
+    featured: false,
+    tone: "ink",
+  },
+  {
+    id: "st-12",
+    title: "Nine Hundred Stairs",
+    slug: "nine-hundred-stairs",
+    authorId: "c-1",
+    genre: "Urban Fantasy",
+    tags: ["stairwells", "exchanges", "counting"],
+    synopsis:
+      "The stairwell in the old telephone exchange has nine hundred steps. The building is six floors tall. Nobody has ever counted them twice and got the same answer.",
+    status: "published",
+    publishedAt: "2026-10-02",
+    updatedAt: "2026-11-23",
+    likes: 1422,
+    reads: 19780,
+    universeId: "unv-3",
+    featured: false,
+    tone: "cobalt",
+  },
+  {
+    id: "st-13",
+    title: "The Long Quiet",
+    slug: "the-long-quiet",
+    authorId: "c-4",
+    genre: "Literary Fantasy",
+    tags: ["bells", "silence", "aftermath"],
+    synopsis:
+      "After the war the bells were melted down and nobody was permitted to say what they had been rung for. This is the sound of a town learning to be silent.",
+    status: "published",
+    publishedAt: "2026-11-15",
+    updatedAt: "2026-11-27",
+    likes: 388,
+    reads: 6240,
+    universeId: null,
+    featured: false,
+    tone: "paper",
+  },
+  {
+    id: "st-14",
+    title: "Signal from the Cloud Deck",
+    slug: "signal-from-the-cloud-deck",
+    authorId: "c-3",
+    genre: "Science Fiction",
+    tags: ["transmission", "protocol", "botany"],
+    synopsis:
+      "The station receives a transmission in its own voice, dated forty years from now. The protocol says to log it. The botanist says to answer.",
+    status: "published",
+    publishedAt: "2026-11-19",
+    updatedAt: "2026-11-27",
+    likes: 1104,
+    reads: 15380,
+    universeId: "unv-2",
+    featured: false,
+    tone: "cobalt",
+  },
+  {
+    id: "st-15",
+    title: "The Winter Ledger",
+    slug: "the-winter-ledger",
+    authorId: "c-4",
+    genre: "Historical",
+    tags: ["ledgers", "winter", "provisions"],
+    synopsis:
+      "Every winter the town records what it ate. One year the ledger lists a provision nobody planted, bought, or remembers eating — and the town is still healthy in the spring.",
+    status: "published",
+    publishedAt: "2026-11-03",
+    updatedAt: "2026-11-22",
+    likes: 612,
+    reads: 10120,
+    universeId: "unv-4",
+    featured: false,
+    tone: "paper",
+  },
 ];
 
 let chapters = [
@@ -366,6 +492,102 @@ let chapters = [
       "No Torgath ship survives. No Torgath account of the war was ever found.",
       "Everything written about them comes from order records, which is to say from their enemies, which is to say from the people who cut nine moorings and then wrote the history of the cutting.",
       "Islanders still say a sail on the horizon is Torgath weather.",
+    ].join("\n\n"),
+  },
+  {
+    id: "ch-9",
+    storyId: "st-9",
+    index: 1,
+    title: "What the Lamps Remember",
+    status: "published",
+    words: 2980,
+    updatedAt: "2026-11-25",
+    content: [
+      "The road appears at two in the morning and it is gone by four. This is not a secret; it is in the harbourmaster's handbook, on the page nobody reads.",
+      "Aldous had lit it for thirty years. Two hundred and eleven lamps, each one a small brass promise that the road was still there and would still be there tomorrow.",
+      "He had never once reached the end. He had walked until the fourth hour every night of his working life, and every night the last lamp was still ahead of him.",
+    ].join("\n\n"),
+  },
+  {
+    id: "ch-10",
+    storyId: "st-10",
+    index: 1,
+    title: "The Commission Opens",
+    status: "published",
+    words: 3120,
+    updatedAt: "2026-11-20",
+    content: [
+      "On the eleventh of March, 1841, the harbour at Wrack emptied in under an hour.",
+      "Not drained — emptied. The boats that had been afloat at nine o'clock were on the harbour floor at ten, upright, with their crews still aboard and nothing visibly wrong with any of them.",
+      "The commission sat for nine years and produced eleven volumes. The eleventh volume is one sentence long.",
+    ].join("\n\n"),
+  },
+  {
+    id: "ch-11",
+    storyId: "st-11",
+    index: 1,
+    title: "Four Hundred Maps",
+    status: "published",
+    words: 2740,
+    updatedAt: "2026-11-24",
+    content: [
+      "He left her the maps, the house, and one instruction written on the back of a tide table: never draw the coastline past the point where the ink runs out.",
+      "She thought it was a joke about his penmanship. It took her two years to understand that he had meant it literally, and another year to find the map where he had stopped.",
+    ].join("\n\n"),
+  },
+  {
+    id: "ch-12",
+    storyId: "st-12",
+    index: 1,
+    title: "The First Count",
+    status: "published",
+    words: 2610,
+    updatedAt: "2026-11-23",
+    content: [
+      "The building is six floors. The stairwell is not.",
+      "There are nine hundred steps in it. This is not a rumour; the surveyor's plate in the lobby says so, and the plate has been there since 1911.",
+      "Nobody has counted them twice and got the same answer, which is why the exchange keeps a book by the door, and why the book has never been full.",
+    ].join("\n\n"),
+  },
+  {
+    id: "ch-13",
+    storyId: "st-13",
+    index: 1,
+    title: "The Bells Come Down",
+    status: "published",
+    words: 2890,
+    updatedAt: "2026-11-27",
+    content: [
+      "They melted the bells in the spring and used the bronze for a fountain that has never worked.",
+      "Nobody was permitted to say what the bells had been rung for. The prohibition was not written down anywhere, which is how she knew it was serious.",
+    ].join("\n\n"),
+  },
+  {
+    id: "ch-14",
+    storyId: "st-14",
+    index: 1,
+    title: "Forty Years Ahead",
+    status: "published",
+    words: 3050,
+    updatedAt: "2026-11-27",
+    content: [
+      "The transmission arrived at 04:11 station time, in the station's own voice, carrying a date forty years from now.",
+      "Protocol is unambiguous. Log it, seal it, do not answer.",
+      "Dr. Okonjo logged it. Then she went down to the botany ring and asked the only person aboard who had ever grown anything whether a sealed message counted as silence.",
+    ].join("\n\n"),
+  },
+  {
+    id: "ch-15",
+    storyId: "st-15",
+    index: 1,
+    title: "The Fourth Column",
+    status: "published",
+    words: 3240,
+    updatedAt: "2026-11-22",
+    content: [
+      "Every winter the town records what it ate. This is not sentiment; it is provisioning, and it has been done the same way since the granary was built.",
+      "The ledger has four columns: what was stored, what was issued, what was eaten, and what was left.",
+      "In the winter of 1902 the fourth column does not balance, and the town is healthier in the spring than it has any right to be.",
     ].join("\n\n"),
   },
 ];
@@ -744,11 +966,29 @@ let library = {
  */
 const STORE_KEY = "lorekeeper_store_v1";
 
+/**
+ * Seed version. Bump this whenever the seed archive changes shape or gains
+ * entries: a saved store from an older seed is then discarded instead of
+ * shadowing the new seed. Without it, any browser that has ever run this app
+ * keeps its first snapshot forever, and every later seed edit is invisible —
+ * which looks exactly like the app failing to load the new data.
+ */
+const SEED_VERSION = 2;
+
 function persist() {
   try {
     localStorage.setItem(
       STORE_KEY,
-      JSON.stringify({ stories, chapters, universes, lore, events, campaigns, library }),
+      JSON.stringify({
+        seedVersion: SEED_VERSION,
+        stories,
+        chapters,
+        universes,
+        lore,
+        events,
+        campaigns,
+        library,
+      }),
     );
   } catch {
     // Quota or a private-mode restriction: the session still works in memory.
@@ -764,6 +1004,13 @@ function hydrate() {
   }
 
   if (!saved) return;
+
+  // A store written by an older seed is stale: keep the seed that shipped with
+  // this build and let the next write overwrite the old snapshot.
+  if (saved.seedVersion !== SEED_VERSION) {
+    localStorage.removeItem(STORE_KEY);
+    return;
+  }
 
   if (Array.isArray(saved.stories)) stories = saved.stories;
   if (Array.isArray(saved.chapters)) chapters = saved.chapters;
